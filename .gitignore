@@ -1,0 +1,5 @@
+.DS_Store
+__pycache__/
+*.pyc
+# Client workspaces never live in this repository
+eb/
