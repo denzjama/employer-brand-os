@@ -20,8 +20,21 @@ NS = {
 SUPPORTED = {".docx", ".pptx", ".xlsx"}
 
 
+MAX_PART_BYTES = 50 * 1024 * 1024
+
+
+class UnsafeDocument(ValueError):
+    """A document part that is oversized or declares a DTD."""
+
+
 def _xml(z: zipfile.ZipFile, name: str) -> ET.Element:
-    return ET.fromstring(z.read(name))
+    # Client files are untrusted: refuse zip bombs and DTDs (entity expansion).
+    if z.getinfo(name).file_size > MAX_PART_BYTES:
+        raise UnsafeDocument(f"{name} is larger than {MAX_PART_BYTES} bytes")
+    data = z.read(name)
+    if b"<!DOCTYPE" in data or b"<!ENTITY" in data:
+        raise UnsafeDocument(f"{name} declares a DTD or entities")
+    return ET.fromstring(data)
 
 
 def docx_text(z: zipfile.ZipFile) -> str:
@@ -109,7 +122,7 @@ def main() -> int:
         try:
             with zipfile.ZipFile(src) as z:
                 text = EXTRACTORS[src.suffix.lower()](z)
-        except (zipfile.BadZipFile, KeyError, ET.ParseError) as exc:
+        except (zipfile.BadZipFile, KeyError, ET.ParseError, UnsafeDocument) as exc:
             print(f"failed {src.relative_to(inbox)}: {exc}")
             continue
         dst.write_text(text, encoding="utf-8")
