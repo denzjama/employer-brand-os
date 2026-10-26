@@ -11,6 +11,7 @@ import sys
 import zipfile
 from pathlib import Path
 from xml.etree import ElementTree as ET
+from xml.parsers import expat
 
 NS = {
     "w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
@@ -32,9 +33,24 @@ def _xml(z: zipfile.ZipFile, name: str) -> ET.Element:
     if z.getinfo(name).file_size > MAX_PART_BYTES:
         raise UnsafeDocument(f"{name} is larger than {MAX_PART_BYTES} bytes")
     data = z.read(name)
-    if b"<!DOCTYPE" in data or b"<!ENTITY" in data:
-        raise UnsafeDocument(f"{name} declares a DTD or entities")
+    _reject_dtd(data, name)
     return ET.fromstring(data)
+
+
+def _reject_dtd(data: bytes, name: str) -> None:
+    # Parser-level check, so it holds whatever the document's encoding.
+    def refuse(*_args):
+        raise UnsafeDocument(f"{name} declares a DTD or entities")
+
+    p = expat.ParserCreate()
+    p.SetParamEntityParsing(expat.XML_PARAM_ENTITY_PARSING_NEVER)
+    p.StartDoctypeDeclHandler = refuse
+    p.EntityDeclHandler = refuse
+    p.ExternalEntityRefHandler = refuse
+    try:
+        p.Parse(data, True)
+    except expat.ExpatError as exc:
+        raise ET.ParseError(str(exc)) from exc
 
 
 def docx_text(z: zipfile.ZipFile) -> str:
