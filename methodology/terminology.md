@@ -11,6 +11,17 @@ Canonical identifiers are used in methodology and workspace files. The reader al
 | `EVIDENCE NEEDED` | evidence needed | нужно доказательство | Claimed somewhere, but no source supports it. Never used as fact. |
 | `OUTDATED` | outdated | устарело | Was confirmed, superseded or older than its validity. Not used. |
 
+## 1a. Fact kinds (`brand-core.md` §4.1)
+
+| Identifier | English | Russian |
+|---|---|---|
+| `RESULT` | result | результат |
+| `TARGET` | target | цель |
+| `PLAN` | plan | план |
+| `PRACTICE` | practice | практика |
+| `ESTIMATE` | estimate | оценка |
+| `UNKNOWN` | kind not clear | вид не ясен |
+
 ## 2. Zones (`diagnosis.md` §6)
 
 | Identifier | English | Russian | Meaning |

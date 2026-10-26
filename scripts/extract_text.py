@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
-"""Extract plain text from .docx, .pptx and .xlsx files (methodology/workspace.md §4).
+"""Extract plain text from .docx, .pptx, .xlsx and .html files (methodology/workspace.md §4).
 
 Usage: python3 extract_text.py <inbox-dir>
 
 Writes <inbox-dir>/_text/<relative path>.txt for each supported file, skipping
-extracts that are newer than their source. Standard library only.
+extracts that are newer than their source. The relative path is normalised to
+NFC with non-breaking spaces replaced (methodology/workspace.md §3.5).
+Standard library only.
 """
 import re
 import sys
+import unicodedata
 import zipfile
+from html.parser import HTMLParser
 from pathlib import Path
 from xml.etree import ElementTree as ET
 from xml.parsers import expat
@@ -18,7 +22,10 @@ NS = {
     "a": "http://schemas.openxmlformats.org/drawingml/2006/main",
     "s": "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
 }
-SUPPORTED = {".docx", ".pptx", ".xlsx"}
+SUPPORTED = {".docx", ".pptx", ".xlsx", ".html", ".htm"}
+HTML_SKIP = {"script", "style", "noscript", "svg", "template", "head"}
+HTML_BLOCK = {"p", "div", "section", "article", "li", "tr", "br", "h1", "h2", "h3", "h4", "h5", "h6", "table", "ul", "ol", "header", "footer", "figcaption", "blockquote"}
+NUMERIC = re.compile(r"^[\d\s.,%+\-–]+$")
 
 
 MAX_PART_BYTES = 50 * 1024 * 1024
@@ -118,6 +125,48 @@ def xlsx_text(z: zipfile.ZipFile) -> str:
     return "\n\n".join(out)
 
 
+class _HTMLText(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.parts: list = []
+        self.skip = 0
+
+    def handle_starttag(self, tag, attrs):
+        if tag in HTML_SKIP:
+            self.skip += 1
+            return
+        if self.skip:
+            return
+        if tag in HTML_BLOCK:
+            self.parts.append("\n")
+        # Scripted counters show "0" in the text; keep the real value.
+        for name, value in attrs:
+            if name.startswith("data-") and value and NUMERIC.match(value) and any(c.isdigit() for c in value):
+                self.parts.append(f" [{name}={value}] ")
+        alt = dict(attrs).get("alt")
+        if tag == "img" and alt:
+            self.parts.append(f" [image: {alt}] ")
+
+    def handle_endtag(self, tag):
+        if tag in HTML_SKIP and self.skip:
+            self.skip -= 1
+        elif tag in HTML_BLOCK and not self.skip:
+            self.parts.append("\n")
+
+    def handle_data(self, data):
+        if not self.skip and data.strip():
+            self.parts.append(data)
+
+
+def html_text(path: Path) -> str:
+    if path.stat().st_size > MAX_PART_BYTES:
+        raise UnsafeDocument(f"{path.name} is larger than {MAX_PART_BYTES} bytes")
+    parser = _HTMLText()
+    parser.feed(path.read_text(encoding="utf-8", errors="replace"))
+    text = re.sub(r"[ \t]+", " ", "".join(parser.parts))
+    return re.sub(r"\n\s*\n+", "\n\n", text).strip()
+
+
 EXTRACTORS = {".docx": docx_text, ".pptx": pptx_text, ".xlsx": xlsx_text}
 
 
@@ -131,13 +180,17 @@ def main() -> int:
     for src in sorted(inbox.rglob("*")):
         if src.suffix.lower() not in SUPPORTED or out_root in src.parents or src.name.startswith("~$"):
             continue
-        dst = out_root / (str(src.relative_to(inbox)) + ".txt")
+        rel = unicodedata.normalize("NFC", str(src.relative_to(inbox))).replace("\u00a0", " ")
+        dst = out_root / (rel + ".txt")
         if dst.exists() and dst.stat().st_mtime >= src.stat().st_mtime:
             continue
         dst.parent.mkdir(parents=True, exist_ok=True)
         try:
-            with zipfile.ZipFile(src) as z:
-                text = EXTRACTORS[src.suffix.lower()](z)
+            if src.suffix.lower() in {".html", ".htm"}:
+                text = html_text(src)
+            else:
+                with zipfile.ZipFile(src) as z:
+                    text = EXTRACTORS[src.suffix.lower()](z)
         except (zipfile.BadZipFile, KeyError, ET.ParseError, UnsafeDocument) as exc:
             print(f"failed {src.relative_to(inbox)}: {exc}")
             continue

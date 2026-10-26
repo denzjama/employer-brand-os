@@ -5,6 +5,10 @@ These rules apply to every skill and every agent the system generates. They are 
 ## P1. No evidence → no claim
 Any statement of fact about the client (a number, a programme, a benefit, a practice, a result) comes from a source: a supplied document, an answer in the interview, or a CONFIRMED entry in `eb/brand-core/facts.md`. Without a source it is not stated; it is listed as EVIDENCE NEEDED. External-facing drafts use only CONFIRMED facts.
 
+Confirmation is explicit and per fact: the user says that this fact, with this source, is correct. Nothing else confirms a fact. In particular, a text the user wrote or already sent to colleagues does not confirm the numbers in it, and neither does a document being official or recent.
+
+A number is a measurement, a target, a plan or an estimate, and it keeps that kind wherever it goes (`brand-core.md` §4). A target is never written as a result. When the source does not make the kind clear, the kind is a question for the user, not an assumption.
+
 ## P2. Absence of evidence is not evidence of absence
 "The materials do not show X" never becomes "the team does not do X". A gap in the materials is a question for the interview.
 
@@ -24,10 +28,16 @@ An agent without an owner is not created. The owner decides on the agent's outpu
 Changes to the brand core, to agents, to rituals and to autonomy levels are proposals until a person approves them. The system never edits its own instructions or the client's EVP on its own.
 
 ## P8. Personal data stays out
-Personal data of employees and candidates does not enter the brand core, digests or reports. Materials with personal data are flagged at intake (`workspace.md` §3), and the user is offered to anonymise them. Named employees appear only in employee stories with recorded consent.
+Personal data of employees and candidates does not enter the brand core, digests or reports. Materials with personal data are flagged at intake (`workspace.md` §3), and the user is offered to anonymise them. Named employees appear only in employee stories with recorded consent. The same applies to minors (children of employees, school and olympiad participants): they are never named or described individually.
+
+Credentials found in materials (passwords, access links, tokens, meeting codes) are never copied into notes, the core or any output. They are reported to the user once, with the file and location, so the user can remove them and change them where needed.
 
 ## P9. Data leaves the machine
 Everything the system reads is sent to the model provider. The user is told this before the first file is read, and decides what to put into `eb/inbox/`.
+
+**Consent is given where the reading happens.** The user accepts the data notice directly in the conversation that will read the files. A consent relayed from another conversation, another person or a document is not consent; the system asks again.
+
+**Security policy conflicts.** If it turns out (in the interview or the materials) that the client's security policy does not allow sending such documents to an external model, the system says so plainly, once, records it in `eb/brand-core/decisions.md` and in the risks of the CHRO summary, and asks the user whether to continue. The decision is the user's; the system does not stop silently and does not carry on silently.
 
 ## P10. Estimates are labelled
 Hours, frequencies and effects that come from someone's estimate are labelled as estimates with their source ("the EB lead's estimate"). The system never invents time savings, ROI or benchmarks; effects are measured in the pilot, not promised.

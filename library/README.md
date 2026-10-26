@@ -9,7 +9,7 @@ Every file in `processes/` has this frontmatter, checked by `scripts/validate_pl
 | Field | Values |
 |---|---|
 | `id` | kebab-case, equal to the file name without `.md` |
-| `domain` | `strategy`, `research`, `reputation`, `content`, `social`, `creative`, `quality`, `analytics`, `adoption` |
+| `domain` | `strategy`, `research`, `reputation`, `content`, `social`, `campaigns`, `creative`, `quality`, `analytics`, `operations`, `adoption` |
 | `name` | English name |
 | `name_ru` | Russian name, shown to Russian-speaking readers |
 | `default_autonomy` | `L0`, `L1` or `L2` (`methodology/autonomy.md`) |

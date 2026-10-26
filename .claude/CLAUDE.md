@@ -4,7 +4,7 @@ Project instructions for Claude Code sessions working on this repository.
 
 ## What this project is
 
-Employer Brand OS is a Claude Code plugin (v0.1.0): a multi-agent system for an Employer Brand function. It works in four phases: diagnosis → team assembly → work → adaptation. This version ships Phase 1: `eb-setup`, `brand-core`, `function-diagnosis`. `ARCHITECTURE.md` is the product design; read it before changing behaviour.
+Employer Brand OS is a Claude Code plugin (v0.1.1): a multi-agent system for an Employer Brand function. It works in four phases: diagnosis → team assembly → work → adaptation. This version ships Phase 1: `eb-setup`, `brand-core`, `function-diagnosis`, the overview page template and the team roster format for Phase 2. `ARCHITECTURE.md` is the product design; read it before changing behaviour.
 
 ## Rules for changing the project
 

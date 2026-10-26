@@ -1,0 +1,54 @@
+{
+  "format": "employer-brand-os/team-roster@1",
+  "language": "ru",
+  "approval": {"status": "approved_pending_validation", "by": "Руководитель EB", "date": "2026-01-15"},
+  "agents": [
+    {
+      "id": "employee-stories",
+      "library_id": "employee-stories",
+      "name": "Истории сотрудников",
+      "wave": "WAVE 1",
+      "covers": ["P03"],
+      "owner": "Менеджер контента",
+      "tool_access": {"owner_has_access": false, "operator": "Руководитель EB"},
+      "autonomy": "L1",
+      "ritual": "Еженедельный разбор контента",
+      "first_metric": "Дни от интервью до согласованного текста",
+      "inputs_from": ["owner", "brand-core"],
+      "outputs_to": ["quality-gate"],
+      "needed_to_start": ["Две расшифровки интервью", "Согласие сотрудников на публикацию"],
+      "why_now": "Интервью записаны, тексты ждут неделями"
+    },
+    {
+      "id": "quality-gate",
+      "library_id": "quality-gate",
+      "name": "Контроль качества",
+      "wave": "WAVE 1",
+      "covers": [],
+      "owner": "Руководитель EB",
+      "tool_access": {"owner_has_access": true, "operator": null},
+      "autonomy": "L2",
+      "ritual": "Внутри каждого конвейера",
+      "first_metric": "Доля черновиков, прошедших с первого раза",
+      "inputs_from": ["employee-stories", "brand-core"],
+      "outputs_to": ["owner"],
+      "needed_to_start": ["Подтверждённые факты по темам первых историй"],
+      "why_now": "Обязателен при любом внешнем агенте"
+    }
+  ],
+  "pipelines": [
+    {
+      "id": "story",
+      "title": "История сотрудника",
+      "trigger": "Расшифровка интервью от владельца",
+      "steps": [
+        {"from": "owner", "to": "coordinator", "what": "Передаёт расшифровку"},
+        {"from": "coordinator", "to": "employee-stories", "what": "Ставит задачу"},
+        {"from": "brand-core", "to": "employee-stories", "what": "Голос и подтверждённые факты"},
+        {"from": "employee-stories", "to": "quality-gate", "what": "Черновик"},
+        {"from": "quality-gate", "to": "owner", "what": "Черновик с проверкой"},
+        {"from": "owner", "to": "log", "what": "Решение и причина"}
+      ]
+    }
+  ]
+}

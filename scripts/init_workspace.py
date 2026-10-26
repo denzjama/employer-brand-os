@@ -16,7 +16,7 @@ DIRS = [
     "eb/brand-core",
     "eb/diagnosis",
     "eb/team",
-    "eb/work",
+    "eb/work/adhoc",
     "eb/log",
     "eb/retro/proposals",
 ]
@@ -39,9 +39,20 @@ TEXT = {
             "- [ ] Интервью: блок E — цели и планы\n"
             "- [ ] Интервью: блок F — готовность к изменениям и ритуалы\n"
             "- [ ] Карта функции и AI-карта\n"
-            "- [ ] Предложение по команде агентов\n"
+            "- [ ] Предложение по команде агентов и конвейеры\n"
+            "- [ ] Проверка с будущими владельцами агентов\n"
             "- [ ] Сводка для CHRO\n"
-            "- [ ] Разбор с руководителем EB\n\n"
+            "- [ ] Разбор и утверждение с руководителем EB\n"
+            "- [ ] Страница обзора\n\n"
+            "Отметки: [ ] не начато, [~] частично (чего ждём — ниже), [x] готово.\n\n"
+            "## Ждём\n\n"
+            "Пока ничего.\n\n"
+            "## Готовность к фазе 2\n\n"
+            "- Согласование безопасности: не готово\n"
+            "- Доступ к инструменту у владельцев: не готово\n"
+            "- Общая папка команды: не готово\n"
+            "- Проверка с будущими владельцами: не готово\n"
+            "- Подтверждённые факты для внешних агентов: не готово\n\n"
             "Следующий шаг: положить материалы в eb/inbox/ и попросить собрать бренд-ядро.\n"
         ),
         "titles": {
@@ -72,9 +83,20 @@ TEXT = {
             "- [ ] Interview: block E — goals and plans\n"
             "- [ ] Interview: block F — change readiness and rituals\n"
             "- [ ] Function map and AI map\n"
-            "- [ ] Agent team proposal\n"
+            "- [ ] Agent team proposal and pipelines\n"
+            "- [ ] Validation with the future owners\n"
             "- [ ] CHRO summary\n"
-            "- [ ] Review with the EB lead\n\n"
+            "- [ ] Review and approval with the EB lead\n"
+            "- [ ] Overview page\n\n"
+            "Marks: [ ] not started, [~] partly done (see Waiting for), [x] done.\n\n"
+            "## Waiting for\n\n"
+            "Nothing yet.\n\n"
+            "## Readiness for Phase 2\n\n"
+            "- Security approval: not ready\n"
+            "- Tool access for owners: not ready\n"
+            "- Shared team workspace: not ready\n"
+            "- Validation with future owners: not ready\n"
+            "- Confirmed facts for external-facing agents: not ready\n\n"
             "Next step: put materials into eb/inbox/ and ask to build the brand core.\n"
         ),
         "titles": {
@@ -90,8 +112,12 @@ TEXT = {
     },
 }
 
-FACTS_TABLE = "| ID | Fact | Pillar | Source | Period | Status | Confirmed | Notes |\n|---|---|---|---|---|---|---|---|\n"
-INDEX_TABLE = "| ID | File | Type | Period | Summary | Personal data | Used for |\n|---|---|---|---|---|---|---|\n"
+FACTS_TABLE = "| ID | Fact | Kind | Pillar | Source | Period | Status | Confirmed | Notes |\n|---|---|---|---|---|---|---|---|---|\n"
+INDEX_TABLE = (
+    "| ID | File | Type | Format | Pages | Period | Same as | Summary | Personal data | Used for |\n"
+    "|---|---|---|---|---|---|---|---|---|---|\n\n"
+    "## Decisions\n\n| Date | Material | Decision | Who decided |\n|---|---|---|---|\n"
+)
 
 
 def write_new(path: Path, content: str, created: list) -> None:
@@ -122,6 +148,7 @@ def main() -> int:
     write_new(root / "eb/status.md", t["status"].format(today=today), created)
     write_new(root / "eb/inbox/_index.md", f"# {t['index']}\n\n{INDEX_TABLE}", created)
     write_new(root / "eb/diagnosis/interview-log.md", f"# {t['interview']}\n", created)
+    write_new(root / "eb/log/adhoc.md", "# One-off requests\n\n| Date | Request | Similar library process | Time |\n|---|---|---|---|\n", created)
     for name, title in t["titles"].items():
         body = f"# {title}\n\n{t['draft']}\n\n"
         if name == "facts.md":

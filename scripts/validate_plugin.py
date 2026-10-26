@@ -10,7 +10,10 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-DOMAINS = {"strategy", "research", "reputation", "content", "social", "creative", "quality", "analytics", "adoption"}
+DOMAINS = {
+    "strategy", "research", "reputation", "content", "social", "campaigns",
+    "creative", "quality", "analytics", "operations", "adoption",
+}
 LEVELS = {"L0", "L1", "L2"}
 SECTIONS = [
     "Purpose", "Fits when", "Triggers", "Inputs", "Outputs",
@@ -22,7 +25,10 @@ REQUIRED = [
     "methodology/principles.md", "methodology/terminology.md", "methodology/workspace.md",
     "methodology/brand-core.md", "methodology/diagnosis.md", "methodology/autonomy.md",
     "library/README.md", "scripts/init_workspace.py", "scripts/extract_text.py",
+    "scripts/inventory.py", "scripts/build_overview.py", "CHANGELOG.md",
+    "templates/overview.html", "templates/overview.sample.json", "templates/team-roster.sample.json",
 ]
+ROSTER_SPECIAL = {"owner", "coordinator", "brand-core", "log", "lead"}
 UNFINISHED = re.compile(r"\b(TODO|TBD|FIXME|XXX|lorem ipsum)\b", re.I)
 
 errors: list = []
@@ -137,8 +143,42 @@ def check_text() -> None:
             check_refs(path, text)
 
 
+def check_templates() -> None:
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import build_overview  # noqa: E402
+
+    try:
+        sample = json.loads((ROOT / "templates/overview.sample.json").read_text(encoding="utf-8"))
+        roster = json.loads((ROOT / "templates/team-roster.sample.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        err(f"templates: {exc}")
+        return
+    for problem in build_overview.check(sample):
+        err(f"templates/overview.sample.json: {problem}")
+    page = (ROOT / "templates/overview.html").read_text(encoding="utf-8")
+    for marker in ("__LANG__", "__TITLE__", "__DATA__"):
+        if page.count(marker) != 1:
+            err(f"templates/overview.html: placeholder {marker} must appear exactly once")
+    if 'data-theme="dark"' not in page or "prefers-color-scheme" in page:
+        err("templates/overview.html: must be light by default with an explicit dark switch")
+    ids = {a["id"] for a in roster.get("agents", [])}
+    for a in roster.get("agents", []):
+        for key in ("owner", "tool_access", "autonomy", "ritual", "first_metric", "inputs_from", "outputs_to"):
+            if key not in a:
+                err(f"team-roster.sample.json: agent {a.get('id')} missing {key}")
+        for ref in a.get("inputs_from", []) + a.get("outputs_to", []):
+            if ref not in ids | ROSTER_SPECIAL:
+                err(f"team-roster.sample.json: agent {a.get('id')} refers to unknown {ref}")
+    for pl in roster.get("pipelines", []):
+        for st in pl.get("steps", []):
+            for ref in (st.get("from"), st.get("to")):
+                if ref not in ids | ROSTER_SPECIAL:
+                    err(f"team-roster.sample.json: pipeline {pl.get('id')} refers to unknown {ref}")
+
+
 def main() -> int:
     check_required()
+    check_templates()
     check_manifests()
     check_skills()
     check_library()
