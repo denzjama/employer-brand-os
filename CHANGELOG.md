@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.0 — Phase 2: team assembly
+
+- New skill `team-assembly`: readiness gate, canonical agent descriptions confirmed by their owners, generation, shared repository, trial runs, onboarding pages.
+- New methodology: `assembly.md` (Phase 2) and `coordination.md` (handoffs, quality-gate loop with at most three attempts, one file per decision and per run, shared repository routine).
+- New `scripts/render_team.py`: vendors the plugin into `vendor/eb-marketplace/`, generates `.claude/agents/eb-<id>.md`, the coordinator block in `CLAUDE.md`, one command per pipeline, the ritual commands, `eb/team/roster.md` and a `.gitignore` that keeps original materials out of the repository. Deterministic; never touches work, logs or the brand core.
+- New plugin hooks: `guard_write.py` lets a team agent write only its own `eb/work/<id>/` and keeps every subagent out of the brand core, team files and decision log; `log_run.py` logs every team-agent run. Both do nothing outside an Employer Brand OS workspace.
+- New `scripts/record_decision.py`, `scripts/export_docx.py` (standard library), and `scripts/join_team.sh` for a colleague to connect once.
+- Ritual command templates: `/weekly`, `/core-review`, `/decide`, `/export-docx`, `/eb-sync`.
+- Operators: an owner without access decides; an operator runs the agent and records the decision.
+- Validator: Phase 2 files, hook references, ritual templates, and a deterministic sample assembly.
+
 ## 0.1.1 — fixes after the first pilot
 
 The first real diagnosis of an Employer Brand function (51 materials, six interview blocks, a 27-process map) left 25 notes on the plugin. This release addresses those that concern Phase 1.

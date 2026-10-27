@@ -61,7 +61,8 @@ Tell them the minimum: any three of these are enough to start; the interview fil
 ### Step 5 — Route
 - Materials in `eb/inbox/`, not yet indexed → the `brand-core` skill (intake and brand core).
 - Brand core built → the `function-diagnosis` skill.
-- Diagnosis approved → show the readiness for Phase 2 from `eb/status.md` (`workspace.md` §6) and say that team assembly (Phase 2) is the next phase of the product and is not available in this version.
+- Diagnosis approved → show the readiness for Phase 2 from `eb/status.md` (`workspace.md` §6), then the `team-assembly` skill.
+- Team assembled → the team works through the commands in `CLAUDE.md` (`/eb-sync`, `/weekly`, pipeline commands, `/decide`).
 
 Update `eb/status.md` after steps 3 and 5.
 

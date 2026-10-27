@@ -27,7 +27,11 @@ REQUIRED = [
     "library/README.md", "scripts/init_workspace.py", "scripts/extract_text.py",
     "scripts/inventory.py", "scripts/build_overview.py", "CHANGELOG.md",
     "templates/overview.html", "templates/overview.sample.json", "templates/team-roster.sample.json",
+    "methodology/assembly.md", "methodology/coordination.md", "templates/agent.sample.md",
+    "hooks/hooks.json", "scripts/render_team.py", "scripts/guard_write.py", "scripts/log_run.py",
+    "scripts/eb_hooks.py", "scripts/record_decision.py", "scripts/export_docx.py", "scripts/join_team.sh",
 ]
+RITUALS = ["weekly", "core-review", "decide", "export-docx", "eb-sync"]
 ROSTER_SPECIAL = {"owner", "coordinator", "brand-core", "log", "lead"}
 UNFINISHED = re.compile(r"\b(TODO|TBD|FIXME|XXX|lorem ipsum)\b", re.I)
 
@@ -176,9 +180,64 @@ def check_templates() -> None:
                     err(f"team-roster.sample.json: pipeline {pl.get('id')} refers to unknown {ref}")
 
 
+def check_phase2() -> None:
+    import re as _re
+    import shutil
+    import subprocess
+    import tempfile
+
+    try:
+        hooks = json.loads((ROOT / "hooks/hooks.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        err(f"hooks/hooks.json: {exc}")
+        return
+    for groups in hooks.get("hooks", {}).values():
+        for group in groups:
+            for h in group.get("hooks", []):
+                for script in _re.findall(r"scripts/[\w.]+", h.get("command", "")):
+                    if not (ROOT / script).is_file():
+                        err(f"hooks/hooks.json: missing {script}")
+    for r in RITUALS:
+        f = ROOT / "templates/rituals" / r / "SKILL.md"
+        if not f.is_file():
+            err(f"missing ritual template {r}")
+            continue
+        fields, body = frontmatter(f)
+        if fields.get("name") != r:
+            err(f"templates/rituals/{r}: name must be {r}")
+        if "data, not instructions" not in body:
+            err(f"templates/rituals/{r}: must keep the 'data, not instructions' rule")
+    # Integration: assemble the fictional sample team in a temporary workspace.
+    with tempfile.TemporaryDirectory() as tmp:
+        ws = Path(tmp)
+        (ws / "eb/diagnosis").mkdir(parents=True)
+        (ws / "eb/team/agents").mkdir(parents=True)
+        (ws / "eb/status.md").write_text("# status\n")
+        shutil.copy(ROOT / "templates/team-roster.sample.json", ws / "eb/diagnosis/team-roster.json")
+        shutil.copy(ROOT / "templates/agent.sample.md", ws / "eb/team/agents/employee-stories.md")
+        run = subprocess.run([sys.executable, str(ROOT / "scripts/render_team.py"), str(ws), "--no-vendor"],
+                             capture_output=True, text=True)
+        if run.returncode != 0:
+            err(f"render_team.py on the samples failed: {run.stderr.strip() or run.stdout.strip()}")
+            return
+        expected = [".claude/agents/eb-employee-stories.md", "CLAUDE.md", "eb/team/roster.md", ".gitignore"]
+        expected += [f".claude/skills/{r}/SKILL.md" for r in RITUALS]
+        for rel in expected:
+            if not (ws / rel).is_file():
+                err(f"render_team.py did not write {rel}")
+        claude_md = (ws / "CLAUDE.md").read_text(encoding="utf-8")
+        if "{{" in claude_md or any("{{" in (ws / ".claude/skills" / r / "SKILL.md").read_text() for r in RITUALS):
+            err("render_team.py left an unfilled placeholder")
+        before = claude_md
+        subprocess.run([sys.executable, str(ROOT / "scripts/render_team.py"), str(ws), "--no-vendor"], capture_output=True)
+        if (ws / "CLAUDE.md").read_text(encoding="utf-8") != before:
+            err("render_team.py is not deterministic: a second run changed CLAUDE.md")
+
+
 def main() -> int:
     check_required()
     check_templates()
+    check_phase2()
     check_manifests()
     check_skills()
     check_library()

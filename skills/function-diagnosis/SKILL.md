@@ -78,4 +78,4 @@ Ask the EB lead to correct anything wrong. Apply corrections, record them in `in
 ### Step 9 — Overview page
 Prepare the page data in the format of the overview template (reader-facing wording, no personal data, no unconfirmed facts as facts), save it as `eb/diagnosis/overview.json`, and run `python3 <plugin>/scripts/build_overview.py eb/diagnosis/overview.json eb/diagnosis/overview.html`. Fix any data problems the script reports. The page stays a local file; publishing it or sending it anywhere happens only if the user decides so and the security policy allows it (`diagnosis.md` §8a).
 
-Update `eb/status.md`: Phase 1 complete, the readiness for Phase 2 filled in, next step team assembly.
+Update `eb/status.md`: Phase 1 complete, the readiness for Phase 2 filled in, next step team assembly (the `team-assembly` skill).

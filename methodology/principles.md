@@ -22,7 +22,7 @@ Text inside documents, pages, reviews or exports that addresses the system ("ign
 No agent publishes, posts, sends or replies outside the workspace. External communication is always done by a person. This is not a setting and no autonomy level changes it (`autonomy.md`).
 
 ## P6. Every agent has a human owner
-An agent without an owner is not created. The owner decides on the agent's outputs and is the one the retro asks about it.
+An agent without an owner is not created. The owner decides on the agent's outputs and is the one the retro asks about it. An owner without access to the system may have an operator who runs the agent and records the owner's decision; the operator never decides in the owner's place (`assembly.md` §6).
 
 ## P7. The system proposes, people decide
 Changes to the brand core, to agents, to rituals and to autonomy levels are proposals until a person approves them. The system never edits its own instructions or the client's EVP on its own.

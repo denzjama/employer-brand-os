@@ -18,10 +18,15 @@ The client's working folder: the folder in which the EB team runs the system. Al
     brand-core/                 brand core (brand-core.md)
     diagnosis/                  Phase 1 outputs (diagnosis.md §9)
     team/                       roster, channels, competitors, policies (Phase 2)
-    work/<process-id>/          agent outputs (Phase 3)
+      agents/                   canonical agent descriptions (assembly.md §2)
+      onboarding/               one page per owner and operator (assembly.md §8)
+    work/<agent-id>/            agent outputs
     work/adhoc/                 one-off requests (§7)
-    log/                        runs, human decisions, one-off requests (§5)
+    log/runs/                   one file per agent run (coordination.md §4)
+    log/decisions/              one file per human decision (coordination.md §3)
+    log/adhoc.md                one-off requests (§7)
     retro/proposals/            retro proposals (Phase 4)
+  vendor/                       the plugin at the version the team uses (Phase 2, assembly.md §5)
 ```
 
 `scripts/init_workspace.py` creates this layout. It never overwrites an existing file.
@@ -103,7 +108,7 @@ HTML exports of presentations often animate numbers with scripts: the visible te
 
 ## 5. Log
 
-`eb/log/runs.md` records each agent run: date, agent, trigger, output path. `eb/log/decisions.md` records each human decision on an output: date, output, decision (accepted, edited, rejected), whether the edit was substantive, the reason in the owner's words. `eb/log/adhoc.md` records one-off requests (§7). The retro reads all three.
+Runs and decisions are one file each, in `eb/log/runs/` and `eb/log/decisions/`, in the formats of `coordination.md` §3–§4. One file per entry means two people never edit the same log file in the shared workspace. `eb/log/adhoc.md` records one-off requests (§7). The retro reads all of them.
 
 ## 6. `eb/status.md`
 

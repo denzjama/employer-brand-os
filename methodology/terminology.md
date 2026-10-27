@@ -62,3 +62,19 @@ Canonical identifiers are used in methodology and workspace files. The reader al
 | `PASS` | passed | пройдено |
 | `PASS WITH FIXES` | passed with fixes | пройдено с правками |
 | `BLOCKED` | blocked | остановлено |
+
+## 7. Decisions on outputs (`coordination.md` §3)
+
+| Identifier | English | Russian |
+|---|---|---|
+| `ACCEPTED` | accepted | принято |
+| `EDITED` | edited | принято с правками |
+| `REJECTED` | rejected | отклонено |
+
+## 8. Team roles (`assembly.md` §6)
+
+| Identifier | English | Russian |
+|---|---|---|
+| owner | owner | владелец |
+| operator | operator | оператор |
+| coordinator | coordinator | координатор |

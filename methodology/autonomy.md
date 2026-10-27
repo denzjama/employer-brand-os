@@ -16,6 +16,7 @@ How much an agent may do without a person. Set per agent in `eb/team/roster.md`.
 2. **External-facing processes are capped at `L1`.** A process with `external_facing: true` in the library never runs at `L2`.
 3. **The brand core is changed only by a person.** At any level the agent proposes; a person applies or approves.
 4. **Raising a level is a proposal.** Only the retro may propose it, and only the EB lead approves it.
+5. **Every agent writes only its own folder** `eb/work/<id>/`, at every level. Where the runtime allows it, this is enforced technically (`assembly.md` §3).
 
 ## 3. When the retro may propose a change
 
