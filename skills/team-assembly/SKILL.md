@@ -19,6 +19,7 @@ Methodology files live at `../../methodology/` relative to this skill's director
 | `../../methodology/autonomy.md` | Levels, caps, the own-folder rule |
 | `../../methodology/brand-core.md` | Facts agents may use (§6) |
 | `../../library/processes/*.md` | The library entry of each agent |
+| `../../library/agents/*.md` | Reference agents: the starting point of a canonical description, when one exists for the process |
 | `../../templates/agent.sample.md` | Format of a canonical agent description |
 
 ## Rules
@@ -36,9 +37,9 @@ Methodology files live at `../../methodology/` relative to this skill's director
 Read `eb/status.md`, `eb/diagnosis/team-roster.json` and `eb/diagnosis/validation.md`. Apply the readiness gate (`assembly.md` §1). Show the EB lead, in at most ten lines: what will be assembled, what waits and why, which owners need an operator and who it is, which external agents lack confirmed facts. Get a go-ahead.
 
 ### Step 2 — Canonical descriptions
-For each agent to assemble, write `eb/team/agents/<id>.md` in the format of `assembly.md` §2 and the sample template: header from the roster, Purpose and Never does from the library entry and the invariants, Reads and Produces with real workspace paths, Handoff with acceptance criteria, Client specifics from the notes, the interview log and the brand core, each with its source.
+For each agent to assemble, write `eb/team/agents/<id>.md` in the format of `assembly.md` §2 and the sample template: header from the roster; Purpose, Produces, Method, Handoff, Checks and Never does from the reference agent (`../../library/agents/<library_id>.md`) when it exists, otherwise from the library entry and the invariants; Reads and Produces with real workspace paths; Client specifics from the notes, the interview log and the brand core, each with its source. With a reference, go through its "Client specifics to collect" item by item: each is filled with a source or listed as missing.
 
-More than three agents: write them with parallel subagents, one agent each. Give each subagent the roster entry, the library entry, `assembly.md` §2, the sample template, P1–P8 in full, and the paths of the notes and interview log; it writes only the draft text and returns it to you. You write the files.
+More than three agents: write them with parallel subagents, one agent each. Give each subagent the roster entry, the reference agent or the library entry, `assembly.md` §2, the sample template, P1–P8 in full, and the paths of the notes and interview log; it writes only the draft text and returns it to you. You write the files.
 
 ### Step 3 — Owner confirmation
 For each agent, show its owner (or the EB lead on the owner's behalf, saying so) Purpose, Never does and Client specifics in plain words. Apply corrections. Record `confirmed_by` and `confirmed_on` in the header.

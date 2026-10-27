@@ -29,8 +29,13 @@ REQUIRED = [
     "templates/overview.html", "templates/overview.sample.json", "templates/team-roster.sample.json",
     "methodology/assembly.md", "methodology/coordination.md", "templates/agent.sample.md",
     "hooks/hooks.json", "scripts/render_team.py", "scripts/guard_write.py", "scripts/log_run.py",
-    "scripts/eb_hooks.py", "scripts/record_decision.py", "scripts/export_docx.py", "scripts/join_team.sh",
+    "library/agents/README.md", "library/pipelines/README.md", "scripts/eb_hooks.py", "scripts/record_decision.py", "scripts/export_docx.py", "scripts/join_team.sh",
 ]
+REF_SECTIONS = [
+    "Purpose", "Reads", "Produces", "Method", "Handoff", "Checks before handing over", "Never does",
+    "Common failures", "Client specifics to collect",
+]
+PIPE_SECTIONS = ["Purpose", "Fits when", "Trigger", "Steps", "Decision", "Variants", "Risks and limits"]
 RITUALS = ["weekly", "core-review", "decide", "export-docx", "eb-sync"]
 ROSTER_SPECIAL = {"owner", "coordinator", "brand-core", "log", "lead"}
 UNFINISHED = re.compile(r"\b(TODO|TBD|FIXME|XXX|lorem ipsum)\b", re.I)
@@ -136,6 +141,84 @@ def check_library() -> None:
     covered = {frontmatter(p)[0].get("domain") for p in entries}
     for missing in sorted(DOMAINS - covered):
         err(f"library has no process in domain {missing}")
+
+
+def pipeline_steps(body: str) -> list:
+    m = re.search(r"^## Steps\n(.*?)(?=^## |\Z)", body, re.S | re.M)
+    rows = re.findall(r"^\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*$", m.group(1) if m else "", re.M)
+    return [{"from": a, "to": b, "what": c} for a, b, c in rows if a != "From" and not set(a) <= {"-"}]
+
+
+def check_references() -> None:
+    processes = {p.stem: frontmatter(p)[0] for p in (ROOT / "library/processes").glob("*.md")}
+    for path in sorted((ROOT / "library/agents").glob("*.md")):
+        if path.name == "README.md":
+            continue
+        rel = path.relative_to(ROOT)
+        fields, body = frontmatter(path)
+        if fields.get("id") != path.stem or path.stem not in processes:
+            err(f"{rel}: id must equal the file name and a process in library/processes/")
+            continue
+        found = re.findall(r"^## (.+)$", body, re.M)
+        if found != REF_SECTIONS:
+            err(f"{rel}: sections must be exactly {REF_SECTIONS}, found {found}")
+        if processes[path.stem].get("external_facing") == "true" and "CONFIRMED" not in body:
+            err(f"{rel}: an external-facing reference must require CONFIRMED facts")
+        if not re.search(r"^\d+\. ", body, re.M):
+            err(f"{rel}: Method must be numbered steps")
+        check_refs(path, body)
+    ids = set()
+    for path in sorted((ROOT / "library/pipelines").glob("*.md")):
+        if path.name == "README.md":
+            continue
+        rel = path.relative_to(ROOT)
+        fields, body = frontmatter(path)
+        ids.add(path.stem)
+        if fields.get("id") != path.stem or not re.match(r"^[a-z0-9]+(-[a-z0-9]+)*$", path.stem):
+            err(f"{rel}: id must be kebab-case and equal the file name")
+        if path.stem in RITUALS:
+            err(f"{rel}: id collides with a ritual command")
+        for key in ("name", "name_ru"):
+            if not fields.get(key):
+                err(f"{rel}: missing {key}")
+        agents = [a.strip() for a in fields.get("agents", "").split(",") if a.strip()]
+        unknown = [a for a in agents if a not in processes]
+        if not agents or unknown:
+            err(f"{rel}: agents must list library processes, unknown: {unknown}")
+        ext = fields.get("external_facing")
+        if ext not in {"true", "false"}:
+            err(f"{rel}: external_facing must be true or false")
+        if ext == "false" and any(processes.get(a, {}).get("external_facing") == "true" for a in agents):
+            err(f"{rel}: uses an external-facing agent, so the pipeline is external-facing")
+        found = re.findall(r"^## (.+)$", body, re.M)
+        if found != PIPE_SECTIONS:
+            err(f"{rel}: sections must be exactly {PIPE_SECTIONS}, found {found}")
+        steps = pipeline_steps(body)
+        if not steps:
+            err(f"{rel}: no steps table")
+            continue
+        refs = {s[k] for s in steps for k in ("from", "to")}
+        for ref in sorted(refs - set(agents) - ROSTER_SPECIAL):
+            err(f"{rel}: step refers to {ref}, which is neither in agents nor a role")
+        for a in agents:
+            if a not in refs:
+                err(f"{rel}: agent {a} takes no step")
+        if steps[-1]["to"] != "log" or steps[-1]["from"] not in {"owner", "lead"}:
+            err(f"{rel}: the last step must record a person's decision in the log")
+        if ext == "true":
+            if "quality-gate" not in agents:
+                err(f"{rel}: an external-facing pipeline passes the quality gate")
+            for s in steps:
+                if s["from"] == "quality-gate" and s["to"] not in {"owner", "lead"}:
+                    err(f"{rel}: the quality gate hands over to the person who decides")
+                if (processes.get(s["from"], {}).get("external_facing") == "true"
+                        and s["to"] in {"owner", "lead"}):
+                    err(f"{rel}: {s['from']} reaches a person without the quality gate")
+    roster = json.loads((ROOT / "templates/team-roster.sample.json").read_text(encoding="utf-8"))
+    for pl in roster.get("pipelines", []):
+        lib = pl.get("library_id")
+        if lib is not None and lib != "CUSTOM" and lib not in ids:
+            err(f"team-roster.sample.json: pipeline {pl.get('id')} has unknown library_id {lib}")
 
 
 def check_text() -> None:
@@ -267,6 +350,7 @@ def main() -> int:
     check_manifests()
     check_skills()
     check_library()
+    check_references()
     check_text()
     if errors:
         print(f"FAILED: {len(errors)} problem(s)")
@@ -275,7 +359,9 @@ def main() -> int:
         return 1
     skills = len(list((ROOT / "skills").glob("*/SKILL.md")))
     procs = len(list((ROOT / "library/processes").glob("*.md")))
-    print(f"OK: {skills} skills, {procs} library processes, manifests consistent")
+    refs = len(list((ROOT / "library/agents").glob("*.md"))) - 1
+    pipes = len(list((ROOT / "library/pipelines").glob("*.md"))) - 1
+    print(f"OK: {skills} skills, {procs} library processes, {refs} reference agents, {pipes} pipelines, manifests consistent")
     return 0
 
 

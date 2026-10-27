@@ -20,6 +20,8 @@ Before generating anything, show the EB lead what will be assembled, what waits 
 
 Every agent is described once in a model-independent file, `eb/team/agents/<id>.md`. This file is the source of truth; runtime files are generated from it (§3) and never edited by hand.
 
+When the library has a reference agent for the process (`library/agents/<library_id>.md`), the description starts from it: its method, result template, acceptance criteria, checks and limits are kept unless the client's work differs, and its "Client specifics to collect" is the checklist for the client specifics. The reference is adapted, not copied: paths, channels, names of rituals and the result headings follow the client. Without a reference the description starts from the library entry alone.
+
 ### 2.1 Header
 
 | Field | Content |
@@ -42,11 +44,14 @@ Every agent is described once in a model-independent file, `eb/team/agents/<id>.
 
 1. **Purpose** — the library purpose, rewritten for this function in the client's words.
 2. **Reads** — the exact brand-core files and workspace paths it reads.
-3. **Produces** — the format of its result and the path: always under `eb/work/<id>/`.
-4. **Handoff** — what it expects from the coordinator and what it returns, in the format of `coordination.md` §1, with the acceptance criteria for this agent.
-5. **Checks before handing over** — for external-facing agents: only `CONFIRMED` facts, the list of numbers with status and kind (`brand-core.md` §6), then the quality gate. For the quality gate itself: its verdicts and the retry rule (`coordination.md` §2).
-6. **Never does** — the library entry's risks and limits, the invariants of `principles.md` that apply, and the client's red lines from `eb/brand-core/red-lines.md`.
-7. **Client specifics** — templates, platform and contractor requirements, good examples from the materials and the interview, each with its source.
+3. **Produces** — the format of its result as a template, and the path: always under `eb/work/<id>/`.
+4. **Method** — the steps from the task to the result, then the common failures to avoid. From the reference agent where there is one.
+5. **Handoff** — what it expects from the coordinator and what it returns, in the format of `coordination.md` §1, with the acceptance criteria for this agent.
+6. **Checks before handing over** — for external-facing agents: only `CONFIRMED` facts, the list of numbers with status and kind (`brand-core.md` §6), then the quality gate. For the quality gate itself: its verdicts and the retry rule (`coordination.md` §2).
+7. **Never does** — the library entry's risks and limits, the invariants of `principles.md` that apply, and the client's red lines from `eb/brand-core/red-lines.md`.
+8. **Client specifics** — templates, platform and contractor requirements, good examples from the materials and the interview, each with its source. Where a reference agent exists, every item of its "Client specifics to collect" is either filled with a source or listed as missing.
+
+Descriptions written before the Method section existed stay valid; the generator accepts them and reports which ones would gain from a reference.
 
 Every statement in "Client specifics" has a source (material ID or interview date). Nothing is invented to make the agent look complete; a missing template is listed as missing.
 

@@ -170,7 +170,9 @@ A process with X = 3 is never `AUTOMATE`. Zones say who leads the work; in every
 
 **Pipelines.** The team is a system, not a set of personal assistants. The proposal describes 3 to 5 pipelines of the first wave: real recurring tasks of this function, each as a sequence of steps from the person who starts it, through the coordinator and the agents, to the person who decides. Every pipeline that produces something external passes the quality gate. At least one pipeline shows how a correction to the brand core reaches all agents, and one how human decisions in the log reach the retro.
 
-**Machine-readable roster.** Together with the proposal, write `eb/diagnosis/team-roster.json` in the format of `templates/team-roster.sample.json`: the agents of every wave with all fields above, and the pipelines as lists of steps (`from`, `to`, `what`). Steps refer to agent IDs or to `owner`, `lead`, `coordinator`, `brand-core`, `log`. Team assembly (Phase 2) builds from this file, not from the prose.
+Start from the pipeline library (`library/pipelines/`): take the entries whose agents are all in the first wave, then adapt the steps to the client's people, rituals and roster IDs. Write a custom pipeline only for a recurring task no entry covers. The brand-core loop and the learning loop entries cover the two required loops.
+
+**Machine-readable roster.** Together with the proposal, write `eb/diagnosis/team-roster.json` in the format of `templates/team-roster.sample.json`: the agents of every wave with all fields above, and the pipelines as lists of steps (`from`, `to`, `what`), each with the `library_id` of the pipeline entry it started from, or `CUSTOM`. Steps refer to agent IDs or to `owner`, `lead`, `coordinator`, `brand-core`, `log`. Team assembly (Phase 2) builds from this file, not from the prose.
 
 The proposal ends with what the first two weeks look like for the team: who onboards when, which rituals start, when the first retro happens.
 

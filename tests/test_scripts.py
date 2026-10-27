@@ -190,6 +190,15 @@ class TestAssembly(unittest.TestCase):
         self.assertEqual(r.returncode, 1)
         self.assertIn("capped at L1", r.stderr)
 
+    def test_rejects_pipeline_that_skips_the_quality_gate(self):
+        f = self.ws / "eb/diagnosis/team-roster.json"
+        roster = json.loads(f.read_text(encoding="utf-8"))
+        roster["pipelines"][0]["steps"].append({"from": "employee-stories", "to": "owner", "what": "Draft"})
+        f.write_text(json.dumps(roster, ensure_ascii=False), encoding="utf-8")
+        r = run("render_team.py", self.ws, "--no-vendor", "--check")
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("without the quality gate", r.stderr)
+
     def test_vendor_and_join_script(self):
         self.assertEqual(run("render_team.py", self.ws).returncode, 0)
         market = json.loads((self.ws / "vendor/eb-marketplace/.claude-plugin/marketplace.json").read_text())
@@ -197,6 +206,71 @@ class TestAssembly(unittest.TestCase):
         self.assertTrue((self.ws / "vendor/eb-marketplace/employer-brand-os/hooks/hooks.json").is_file())
         self.assertFalse((self.ws / "vendor/eb-marketplace/employer-brand-os/.git").exists())
         self.assertTrue((self.ws / "join_team.sh").is_file())
+
+
+    def test_method_section_reaches_the_runtime_agent(self):
+        self.assertEqual(run("render_team.py", self.ws, "--no-vendor").returncode, 0)
+        agent = (self.ws / ".claude/agents/eb-employee-stories.md").read_text(encoding="utf-8")
+        self.assertLess(agent.index("## Produces"), agent.index("## Method"))
+        self.assertLess(agent.index("## Method"), agent.index("## Handoff"))
+
+    def test_description_without_method_still_renders(self):
+        f = self.ws / "eb/team/agents/employee-stories.md"
+        text = f.read_text(encoding="utf-8")
+        f.write_text(text[:text.index("## Method")] + text[text.index("## Handoff"):], encoding="utf-8")
+        out = run("render_team.py", self.ws, "--no-vendor", "--check").stdout
+        self.assertIn("no Method section although a reference agent exists", out)
+        self.assertEqual(run("render_team.py", self.ws, "--no-vendor").returncode, 0)
+        agent = (self.ws / ".claude/agents/eb-employee-stories.md").read_text(encoding="utf-8")
+        self.assertNotIn("## Method", agent)
+
+
+class TestLibrary(unittest.TestCase):
+    """Reference agents and pipelines work with the generator."""
+
+    def test_every_library_pipeline_is_a_valid_roster_pipeline(self):
+        sys.path.insert(0, str(SCRIPTS))
+        import validate_plugin
+        processes = {p.stem for p in (ROOT / "library/processes").glob("*.md")}
+        roles = {"owner", "lead", "coordinator", "brand-core", "log"}
+        for path in (ROOT / "library/pipelines").glob("*.md"):
+            if path.name == "README.md":
+                continue
+            steps = validate_plugin.pipeline_steps(path.read_text(encoding="utf-8"))
+            self.assertTrue(steps, path.name)
+            for s in steps:
+                self.assertTrue({s["from"], s["to"]} <= processes | roles, f"{path.name}: {s}")
+
+    def test_library_pipeline_becomes_a_command(self):
+        sys.path.insert(0, str(SCRIPTS))
+        import validate_plugin
+        with tempfile.TemporaryDirectory() as tmp:
+            ws = Path(tmp)
+            run("init_workspace.py", ws)
+            roster = json.loads((ROOT / "templates/team-roster.sample.json").read_text(encoding="utf-8"))
+            steps = validate_plugin.pipeline_steps((ROOT / "library/pipelines/employee-story.md").read_text(encoding="utf-8"))
+            roster["pipelines"] = [{"id": "story", "title": "История сотрудника", "library_id": "employee-story",
+                                    "trigger": "Расшифровка", "steps": steps}]
+            gate = dict(roster["agents"][0], id="quality-gate", library_id="quality-gate",
+                        inputs_from=["employee-stories"], outputs_to=["owner"])
+            roster["agents"] = [roster["agents"][0], gate]
+            roster["agents"][0]["outputs_to"] = ["quality-gate"]
+            (ws / "eb/diagnosis/team-roster.json").write_text(json.dumps(roster, ensure_ascii=False), encoding="utf-8")
+            agents = ws / "eb/team/agents"
+            agents.mkdir(parents=True)
+            sample = (ROOT / "templates/agent.sample.md").read_text(encoding="utf-8")
+            (agents / "employee-stories.md").write_text(sample, encoding="utf-8")
+            (agents / "quality-gate.md").write_text(
+                sample.replace("id: employee-stories", "id: quality-gate")
+                .replace("library_id: employee-stories", "library_id: quality-gate")
+                .replace("external_facing: true", "external_facing: false")
+                .replace("inputs_from: owner, brand-core", "inputs_from: employee-stories")
+                .replace("outputs_to: quality-gate", "outputs_to: owner"), encoding="utf-8")
+            r = run("render_team.py", ws, "--no-vendor")
+            self.assertEqual(r.returncode, 0, r.stderr)
+            command = (ws / ".claude/skills/story/SKILL.md").read_text(encoding="utf-8")
+            self.assertIn("eb-quality-gate", command)
+            self.assertIn("eb-employee-stories", command)
 
 
 class TestDecisionsExportOverview(unittest.TestCase):

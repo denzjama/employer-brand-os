@@ -20,6 +20,7 @@ Methodology files live at `../../methodology/` relative to this skill's director
 | `../../methodology/workspace.md` | Notes (§3a), status (§6), one-off requests (§7) |
 | `../../methodology/brand-core.md` | Fact kinds (§4.1) and the check before anything leaves the workspace (§6) |
 | `../../library/README.md` and `../../library/processes/*.md` | Matching client processes to library entries; owners, rituals, metrics |
+| `../../library/pipelines/*.md` | Typical pipelines to start the team's pipelines from |
 | `../../templates/team-roster.sample.json` | Format of `eb/diagnosis/team-roster.json` |
 | `../../templates/overview.sample.json` | Format of the overview page data |
 
@@ -54,7 +55,7 @@ During Block C, when the user describes a process the library covers, use the li
 For every process, score V, P, R, D, X, T with a one-line reason and source, and assign the zone and priority (`diagnosis.md` §6). Score V from frequency where hours are unknown, labelled as an estimate. Write `eb/diagnosis/ai-map.md`.
 
 ### Step 5 — Team proposal and roster
-Build `eb/diagnosis/team-proposal.md` (`diagnosis.md` §7): waves with the full tie-break order, the always-included agents, the fields for each agent including tool access, inputs and outputs, the 3 to 5 pipelines of the first wave, and the first two weeks. Use the library entries for rituals, metrics and starting autonomy, adjusted to the rituals and owners the interview found. A process with no library match gets a `CUSTOM` agent described with the same fields.
+Build `eb/diagnosis/team-proposal.md` (`diagnosis.md` §7): waves with the full tie-break order, the always-included agents, the fields for each agent including tool access, inputs and outputs, the 3 to 5 pipelines of the first wave started from the pipeline library and adapted to the client, and the first two weeks. Use the library entries for rituals, metrics and starting autonomy, adjusted to the rituals and owners the interview found. A process with no library match gets a `CUSTOM` agent described with the same fields.
 
 Write `eb/diagnosis/team-roster.json` in the format of the roster template, consistent with the proposal.
 

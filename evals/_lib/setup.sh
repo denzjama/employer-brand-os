@@ -18,6 +18,8 @@ case "$1" in
     ;;
   snapshot)
     cp -R "$ROOT/demo/run/$2/workspace/." .
+    # git keeps no empty folders: restore the layout (init never overwrites a file)
+    python3 "$ROOT/scripts/init_workspace.py" . --lang ru >/dev/null
     ;;
   *)
     echo "unknown mode $1" >&2

@@ -27,7 +27,7 @@ Always, from the first wave. Adoption is a process of its own, not a side effect
 After each team assembly wave; weekly check of `eb/log/`; on request from any team member.
 
 ## Inputs
-`eb/team/roster.md`; `eb/log/runs.md` and `eb/log/decisions.md`; the readiness part of `eb/diagnosis/`; the monthly owner survey (three questions: is it easy to use, do you trust its output, would you recommend it to a colleague).
+`eb/team/roster.md`; `eb/log/runs/` and `eb/log/decisions/`; the readiness part of `eb/diagnosis/`; the monthly owner survey (three questions: is it easy to use, do you trust its output, would you recommend it to a colleague).
 
 ## Outputs
 - Onboarding notes per team member: their agents, their rituals, how to start.

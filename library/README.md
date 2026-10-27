@@ -1,8 +1,14 @@
 # Process library
 
-The catalogue of typical Employer Brand processes. Phase 1 (diagnosis) maps each client process to an entry here. Phase 2 (team assembly) generates one agent per selected entry. The library is model-independent: plain markdown that any runtime can read.
+The catalogue of typical Employer Brand processes, with reference agents and typical pipelines built on them. Phase 1 (diagnosis) maps each client process to an entry here and starts its pipelines from the pipeline library. Phase 2 (team assembly) generates one agent per selected entry, starting from its reference agent when one exists. The library is model-independent: plain markdown that any runtime can read.
 
-## Entry format
+| Folder | What |
+|---|---|
+| `processes/` | One entry per process, in the format below |
+| `agents/` | Reference agents: tested descriptions of a good agent for the most common processes ([format](agents/README.md)) |
+| `pipelines/` | Typical pipelines that connect the agents ([format](pipelines/README.md)) |
+
+## Process entry format
 
 Every file in `processes/` has this frontmatter, checked by `scripts/validate_plugin.py`:
 

@@ -34,7 +34,9 @@ HEADER_FIELDS = [
     "id", "library_id", "name", "owner", "operator", "autonomy", "external_facing", "web_access",
     "ritual", "inputs_from", "outputs_to", "first_metric", "wave",
 ]
-SECTIONS = ["Purpose", "Reads", "Produces", "Handoff", "Checks before handing over", "Never does", "Client specifics"]
+SECTIONS = ["Purpose", "Reads", "Produces", "Method", "Handoff", "Checks before handing over", "Never does", "Client specifics"]
+# Descriptions written before 0.2.2 have no Method section; they stay valid.
+LEGACY_SECTIONS = [s for s in SECTIONS if s != "Method"]
 CLAUDE_START = "<!-- employer-brand-os:coordinator:start -->"
 CLAUDE_END = "<!-- employer-brand-os:coordinator:end -->"
 IGNORE_START = "# employer-brand-os:start"
@@ -70,7 +72,7 @@ def parse_agent(path: Path) -> dict:
         head[key] = [x.strip() for x in head[key].split(",") if x.strip()]
     sections = dict(re.findall(r"^## (.+?)\n(.*?)(?=^## |\Z)", m.group(2), re.S | re.M))
     found = re.findall(r"^## (.+)$", m.group(2), re.M)
-    if found != SECTIONS:
+    if found not in (SECTIONS, LEGACY_SECTIONS):
         raise InputError(f"{path.name}: sections must be exactly {SECTIONS}, found {found}")
     head["sections"] = {k: v.strip() for k, v in sections.items()}
     head["confirmed"] = bool(head.get("confirmed_by") and head.get("confirmed_on"))
@@ -94,6 +96,11 @@ def load(ws: Path) -> tuple:
         for ref in a["inputs_from"] + a["outputs_to"]:
             if ref not in roster_ids | SPECIAL:
                 raise InputError(f"{a['id']}: unknown reference {ref}")
+    for p in roster.get("pipelines", []):
+        for s in p.get("steps", []):
+            src = agents.get(s.get("from"))
+            if src and src["external_facing"] == "true" and s.get("to") in {"owner", "lead"}:
+                raise InputError(f"pipeline {p['id']}: {src['id']} hands an external draft to a person without the quality gate")
     clash = sorted({p["id"] for p in roster.get("pipelines", [])} & set(RITUALS))
     if clash:
         raise InputError(f"pipeline ids collide with ritual commands: {clash}")
@@ -133,7 +140,7 @@ def render_agent(a: dict, pipelines: list) -> str:
     ]
     if a["external_facing"] == "true":
         rules.append("- Your draft goes to the quality gate before the owner sees it. If it comes back blocked, fix only the listed issues and add nothing new.")
-    body = "\n\n".join(f"## {s}\n\n{a['sections'][s]}" for s in SECTIONS)
+    body = "\n\n".join(f"## {s}\n\n{a['sections'][s]}" for s in SECTIONS if s in a["sections"])
     return (
         "---\n"
         f"name: eb-{a['id']}\n"
@@ -324,6 +331,8 @@ def main() -> int:
         return 1
     ready, waiting = pipelines_ready(roster, agents)
     unconfirmed = [a["id"] for a in agents.values() if not a["confirmed"]]
+    no_method = [a["id"] for a in agents.values()
+                 if "Method" not in a["sections"] and (PLUGIN_ROOT / "library" / "agents" / f"{a['library_id']}.md").is_file()]
 
     print(f"agents: {', '.join('eb-' + i for i in agents)}")
     print(f"pipelines: {', '.join(p['id'] for p in ready) or 'none'}")
@@ -331,6 +340,8 @@ def main() -> int:
         print(f"waiting pipeline {p['id']}: needs {', '.join(m)}")
     if unconfirmed:
         print(f"not yet confirmed by their owners: {', '.join(unconfirmed)}")
+    if no_method:
+        print(f"no Method section although a reference agent exists (library/agents/): {', '.join(no_method)}")
     if args.check:
         return 0
 

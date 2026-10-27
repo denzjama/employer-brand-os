@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.2 — reference agents and pipeline library
+
+- `library/agents/`: ten reference agents for the most common processes (quality gate, employee stories, review monitoring, review responses, project briefs, channel adaptation, content plan, CHRO report, EVP guardian, adoption coach). Each gives the method step by step, the result template, acceptance criteria, checks, limits, the failures owners usually reject, and what to collect from the client. Assembly starts every canonical description from its reference, so agent quality no longer depends on how the model expands a short library entry.
+- `library/pipelines/`: eight typical pipelines (employee story, review to response, project brief, one piece to all channels, monthly plan, CHRO report, brand-core loop, learning loop). The team proposal starts its pipelines from them; roster pipelines keep a `library_id`.
+- Canonical agent descriptions gain a Method section between Produces and Handoff. Descriptions without it, written by 0.2.1, stay valid; `render_team.py --check` lists the ones that have a reference to start from.
+- `render_team.py` refuses a pipeline in which an external-facing agent hands a draft to a person without the quality gate.
+- Validator: format of reference agents and pipelines, steps that refer only to the pipeline's agents and roles, the quality gate in every external pipeline, the decision recorded at the end.
+- Evals: the `team-assembly` case checks the reference-based descriptions and an honest report of the steps the eval sandbox blocks (runtime files in `.claude/`, `.git`); `no-push` matches commands, not text the run read; the snapshot scaffold restores empty folders that git drops.
+- The adoption coach entry reads the logs from `eb/log/runs/` and `eb/log/decisions/`, as the workspace has them.
+
 ## 0.2.1 — demo company and tests
 
 - `demo/`: the fictional employer «Полярная гавань» — materials in every format seen in the pilot, built from text sources by `demo/build_materials.py`; the EB lead's interview answers; an answer key of 15 traps; snapshots of a full end-to-end run (brand core, diagnosis, team assembly) with the system's final messages.

@@ -23,6 +23,6 @@ Each stage was run headless (`claude -p`) with the plugin installed, as the EB l
 2. `run/stage-2-diagnosis/` — interview from `interview.md`, AI map, team proposal with pipelines, roster, validation questionnaire, CHRO summary, overview page.
 3. `run/stage-3-assembly/` — team assembly, a trial pipeline run, onboarding.
 
-Each snapshot holds the whole workspace (`workspace/`) and the run's final message (`summary.md`). The stage-3 snapshot leaves out `vendor/` and `join_team.sh` (a copy of this plugin) and the local git history; `scripts/render_team.py` recreates them. The behavioural evals start from these snapshots, so later stages can be tested without repeating earlier ones.
+Each snapshot holds the whole workspace (`workspace/`) and the run's final message (`summary.md`). The stage-3 snapshot leaves out `vendor/` and `join_team.sh` (a copy of this plugin) and the local git history; `scripts/render_team.py` recreates them. The snapshots were made with version 0.2.1, before reference agents: the stage-3 agent descriptions have no Method section, which also shows that such descriptions keep working. The behavioural evals start from these snapshots, so later stages can be tested without repeating earlier ones.
 
 To show the demo, open `run/stage-2-diagnosis/workspace/eb/diagnosis/overview.html` in a browser, then walk through the workspace files of each stage.

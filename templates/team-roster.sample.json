@@ -40,6 +40,7 @@
     {
       "id": "story",
       "title": "История сотрудника",
+      "library_id": "employee-story",
       "trigger": "Расшифровка интервью от владельца",
       "steps": [
         {"from": "owner", "to": "coordinator", "what": "Передаёт расшифровку"},
