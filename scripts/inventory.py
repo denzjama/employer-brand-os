@@ -65,16 +65,22 @@ def main() -> int:
         print(__doc__, file=sys.stderr)
         return 2
     inbox = Path(sys.argv[1]).expanduser().resolve()
-    rows, seen = [], {}
+    files = []
     for path in sorted(inbox.rglob("*")):
         rel_parts = path.relative_to(inbox).parts
         if not path.is_file() or path.name in SKIP or path.name.startswith((".", "~$")) or rel_parts[0] in SKIP_DIRS:
             continue
+        files.append(path)
+    # Of byte-identical files, the one with the shortest name is the original
+    # ("EVP.docx" rather than "EVP (copy).docx"); ties go to sort order.
+    rows, seen = [], {}
+    for path in sorted(files, key=lambda f: (len(f.name), str(f))):
+        seen.setdefault(hashlib.sha256(path.read_bytes()).hexdigest(), str(path.relative_to(inbox)))
+    for path in files:
         rel = str(path.relative_to(inbox))
         ext = path.suffix.lower()
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
-        duplicate = seen.get(digest, "")
-        seen.setdefault(digest, rel)
+        duplicate = "" if seen[digest] == rel else seen[digest]
         pages, text_layer = "", ""
         if ext == ".pdf":
             pages, text_layer = pdf_info(path)

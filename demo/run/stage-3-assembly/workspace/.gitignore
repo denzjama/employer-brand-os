@@ -1,0 +1,16 @@
+# employer-brand-os:start
+# Original materials and text extracts stay on the machine of whoever supplied them.
+eb/inbox/**
+!eb/inbox/
+!eb/inbox/_index.md
+!eb/inbox/_inventory.md
+!eb/inbox/_notes/
+!eb/inbox/_notes/**
+.claude/settings.local.json
+CLAUDE.local.md
+.DS_Store
+__pycache__/
+# employer-brand-os:end
+
+# Исходные ответы интервью — исходный материал, остаётся на этом компьютере
+interview-answers.md

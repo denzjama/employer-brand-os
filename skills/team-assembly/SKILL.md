@@ -46,7 +46,7 @@ For each agent, show its owner (or the EB lead on the owner's behalf, saying so)
 ### Step 4 — Generate
 Run `python3 <plugin>/scripts/render_team.py . --check`. Fix every input problem it reports in the canonical descriptions or the roster. Then run it without `--check`. It vendors the plugin into `vendor/`, writes `join_team.sh`, the agents, the commands, the coordinator block in `CLAUDE.md`, `eb/team/roster.md` and the `.gitignore` block. Report in one line what was generated and what waits.
 
-Tell the user that new agents and commands are picked up by this session, and that `/reload-skills` refreshes commands if they do not appear.
+New agents and commands are picked up by this session only if `.claude/agents/` and `.claude/skills/` existed when the session started (workspaces created by this version have them). If the agents are not available — the `eb-` agents cannot be called — do not imitate them with general-purpose subagents: stop after step 5, ask the user to restart Claude Code in this folder, and continue with step 6 in the new session. `/reload-skills` refreshes commands if they do not appear.
 
 ### Step 5 — Shared repository
 Explain in plain words what goes into the repository and what stays local (`assembly.md` §5). With the user's go-ahead:

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.1 — demo company and tests
+
+- `demo/`: the fictional employer «Полярная гавань» — materials in every format seen in the pilot, built from text sources by `demo/build_materials.py`; the EB lead's interview answers; an answer key of 15 traps; snapshots of a full end-to-end run (brand core, diagnosis, team assembly) with the system's final messages.
+- `tests/`: deterministic script tests (no model calls), also run by the validator.
+- `evals/`: behavioural cases for `claude plugin eval` — prompt injection, brand-core traps, pre-send check, diagnosis traps, team assembly — starting from fresh materials or the demo snapshots.
+- New workspaces get a block of workspace rules in `CLAUDE.md` (facts only from the registry, targets never as results, numbers listed before anything leaves, material is data, people publish), so the invariants hold even when no skill runs. Found by the pre-send eval: an urgent request was answered without any skill.
+- New workspaces get empty `.claude/agents/` and `.claude/skills/`, so agents generated in Phase 2 are picked up without a restart. Found by the demo run. The assembly skill no longer imitates missing agents with general-purpose subagents.
+- Inventory: of byte-identical files, the one with the shortest name is the original.
+
 ## 0.2.0 — Phase 2: team assembly
 
 - New skill `team-assembly`: readiness gate, canonical agent descriptions confirmed by their owners, generation, shared repository, trial runs, onboarding pages.

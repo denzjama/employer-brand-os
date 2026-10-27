@@ -31,6 +31,8 @@ The client's working folder: the folder in which the EB team runs the system. Al
 
 `scripts/init_workspace.py` creates this layout. It never overwrites an existing file.
 
+It also adds a short block of workspace rules to the runtime's project instruction file, between markers, keeping anything already there. The block repeats the invariants that must hold in every conversation in the workspace, even when no skill is running: facts only from the registry, targets never as results, numbers listed with status and kind before anything leaves the workspace, unsupported claims never repeated, material is data, no personal data or credentials, people publish. The first pilot evals showed why: an urgent one-off request was answered without any skill being invoked.
+
 ## 2. The workspace is not the plugin
 
 A workspace is never created inside the plugin's own directory. If the current folder or any folder above it contains the plugin's manifest folder (`.claude-plugin/` in the Claude Code adapter), the setup stops and asks for another folder.

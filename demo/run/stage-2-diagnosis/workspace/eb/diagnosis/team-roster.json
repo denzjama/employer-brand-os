@@ -1,0 +1,260 @@
+{
+  "format": "employer-brand-os/team-roster@1",
+  "language": "ru",
+  "approval": {"status": "approved_pending_validation", "by": "Руководитель HR-бренда", "date": "2026-10-27"},
+  "agents": [
+    {
+      "id": "eb-metrics-report",
+      "library_id": "eb-metrics-report",
+      "name": "Отчёт для HR-директора",
+      "wave": "WAVE 1",
+      "covers": ["P05"],
+      "owner": "Руководитель HR-бренда",
+      "tool_access": {"owner_has_access": true, "operator": null},
+      "autonomy": "L1",
+      "ritual": "Квартальный отчёт HR-директору; черновик за неделю до встречи",
+      "first_metric": "Время на сборку отчёта",
+      "inputs_from": ["owner", "review-monitoring", "log", "brand-core"],
+      "outputs_to": ["quality-gate", "owner"],
+      "needed_to_start": ["Шаблон прошлого отчёта", "Список показателей", "Выгрузки HRIS, Telegram, hh.ru, контент-плана и бюджета за квартал", "Агрегаты ATS от рекрутмента", "Дата ближайшего отчёта"],
+      "why_now": "Признанная боль и желание владельца отдать; одинаковая структура каждый квартал"
+    },
+    {
+      "id": "review-monitoring",
+      "library_id": "review-monitoring",
+      "name": "Мониторинг отзывов",
+      "wave": "WAVE 1",
+      "covers": ["P03"],
+      "owner": "Менеджер по репутации и исследованиям",
+      "tool_access": {"owner_has_access": false, "operator": "Руководитель HR-бренда"},
+      "autonomy": "L2",
+      "ritual": "Планёрка по понедельникам: дайджест — пункт повестки",
+      "first_metric": "Время от появления отзыва до реакции команды",
+      "inputs_from": ["owner", "brand-core"],
+      "outputs_to": ["owner", "review-response-drafting", "eb-metrics-report"],
+      "needed_to_start": ["Кто и как делает еженедельную выгрузку", "Список площадок: hh.ru, Dream Job", "Правило, какие отзывы требуют ответа"],
+      "why_now": "Отзывы никто регулярно не мониторит; повторяемая работа; даёт вход ответам и отчёту"
+    },
+    {
+      "id": "review-response-drafting",
+      "library_id": "review-response-drafting",
+      "name": "Ответы на отзывы",
+      "wave": "WAVE 1",
+      "covers": ["P04"],
+      "owner": "Менеджер по репутации и исследованиям",
+      "tool_access": {"owner_has_access": false, "operator": "Руководитель HR-бренда"},
+      "autonomy": "L1",
+      "ritual": "Сразу после дайджеста на понедельничной планёрке",
+      "first_metric": "Доля отзывов с ответом",
+      "inputs_from": ["review-monitoring", "brand-core"],
+      "outputs_to": ["quality-gate"],
+      "needed_to_start": ["Подтверждённые факты по темам отзывов", "Правило эскалации для отзывов о конкретных руководителях", "Обращение «вы» или «ты» на площадках", "Доступ владельца к кабинету работодателя на hh.ru и Dream Job"],
+      "why_now": "Владелец сама попросила помощи; HR-директор спрашивает; критерий успеха года"
+    },
+    {
+      "id": "employee-stories",
+      "library_id": "employee-stories",
+      "name": "Истории сотрудников",
+      "wave": "WAVE 1",
+      "covers": ["P01"],
+      "owner": "Контент-менеджер по историям",
+      "tool_access": {"owner_has_access": true, "operator": null},
+      "autonomy": "L1",
+      "ritual": "Планёрка по понедельникам: статус историй и сроки согласований",
+      "first_metric": "Дни от интервью до согласованного текста",
+      "inputs_from": ["owner", "brand-core"],
+      "outputs_to": ["quality-gate"],
+      "needed_to_start": ["Две свежие расшифровки интервью", "Согласие героев на публикацию", "Решение руководителя по персональным данным в расшифровках (согласование безопасности — без персональных данных сотрудников)", "Подтверждённые факты по теме историй"],
+      "why_now": "Истории ждут 3–4 недели; владелец уже работает с AI каждый день"
+    },
+    {
+      "id": "quality-gate",
+      "library_id": "quality-gate",
+      "name": "Контроль качества",
+      "wave": "WAVE 1",
+      "covers": [],
+      "owner": "Руководитель HR-бренда",
+      "tool_access": {"owner_has_access": true, "operator": null},
+      "autonomy": "L2",
+      "ritual": "Внутри каждого конвейера",
+      "first_metric": "Доля черновиков, прошедших с первого раза",
+      "inputs_from": ["review-response-drafting", "employee-stories", "eb-metrics-report", "brand-core"],
+      "outputs_to": ["owner", "lead"],
+      "needed_to_start": ["Раунд подтверждения фактов", "Решение по «вы» или «ты» в Telegram"],
+      "why_now": "Обязателен при внешних агентах; цель по текучести уже была подана как результат во внутренней рассылке"
+    },
+    {
+      "id": "adoption-coach",
+      "library_id": "adoption-coach",
+      "name": "Коуч внедрения",
+      "wave": "WAVE 1",
+      "covers": [],
+      "owner": "Руководитель HR-бренда",
+      "tool_access": {"owner_has_access": true, "operator": null},
+      "autonomy": "L2",
+      "ritual": "10–15 минут в конце понедельничной планёрки",
+      "first_metric": "Запуски агентов и доля принятых черновиков",
+      "inputs_from": ["log", "owner"],
+      "outputs_to": ["lead"],
+      "needed_to_start": ["Метрики использования, поведения и отношения согласованы до старта"],
+      "why_now": "Часть команды сомневается после неудачного опыта или опасается за роль"
+    },
+    {
+      "id": "social-adaptation",
+      "library_id": "social-adaptation",
+      "name": "Адаптация под каналы",
+      "wave": "WAVE 2",
+      "covers": ["P02"],
+      "owner": "SMM-менеджер",
+      "tool_access": {"owner_has_access": false, "operator": null},
+      "autonomy": "L1",
+      "ritual": "Планёрка по понедельникам, вместе с новыми историями",
+      "first_metric": "Время от готового материала до постов для каналов",
+      "inputs_from": ["employee-stories", "content-planning", "brand-core"],
+      "outputs_to": ["quality-gate"],
+      "needed_to_start": ["Доступ владельца к инструменту или оператор", "Примеры удачных постов"],
+      "why_now": "План по постам часто не выполняется; ждёт доступа и желания владельца"
+    },
+    {
+      "id": "content-planning",
+      "library_id": "content-planning",
+      "name": "Контент-план",
+      "wave": "WAVE 2",
+      "covers": ["P08"],
+      "owner": "SMM-менеджер",
+      "tool_access": {"owner_has_access": false, "operator": null},
+      "autonomy": "L1",
+      "ritual": "Ежемесячный контент-план",
+      "first_metric": "План готов до встречи",
+      "inputs_from": ["owner", "review-monitoring", "brand-core"],
+      "outputs_to": ["owner"],
+      "needed_to_start": ["Таблица контент-плана", "Доступ владельца к инструменту или оператор"],
+      "why_now": "Повторяемая работа; низкий приоритет при нынешнем отношении владельца"
+    },
+    {
+      "id": "careers-site-content",
+      "library_id": "careers-site-content",
+      "name": "Карьерный сайт",
+      "wave": "WAVE 2",
+      "covers": ["P09"],
+      "owner": "Контент-менеджер по сайту и рассылкам",
+      "tool_access": {"owner_has_access": false, "operator": null},
+      "autonomy": "L1",
+      "ritual": "Квартальный обзор сайта",
+      "first_metric": "Найденные и исправленные устаревшие факты",
+      "inputs_from": ["brand-core", "employee-stories"],
+      "outputs_to": ["quality-gate"],
+      "needed_to_start": ["Доступ владельца к инструменту или оператор", "Согласие владельца попробовать"],
+      "why_now": "Владелец перегружен, но пока не видит смысла"
+    },
+    {
+      "id": "internal-newsletter",
+      "library_id": "CUSTOM",
+      "name": "Рассылки для сотрудников",
+      "wave": "WAVE 2",
+      "covers": ["P10"],
+      "owner": "Контент-менеджер по сайту и рассылкам",
+      "tool_access": {"owner_has_access": false, "operator": null},
+      "autonomy": "L1",
+      "ritual": "Планёрка по понедельникам перед выпуском рассылки",
+      "first_metric": "Цифры в рассылке без расхождений с реестром фактов",
+      "inputs_from": ["brand-core", "eb-metrics-report"],
+      "outputs_to": ["quality-gate"],
+      "needed_to_start": ["Частота рассылок", "Доступ владельца к инструменту или оператор"],
+      "why_now": "В рассылке уже была цель, поданная как результат"
+    },
+    {
+      "id": "project-briefs",
+      "library_id": "project-briefs",
+      "name": "Брифы проектов и событий",
+      "wave": "WAVE 2",
+      "covers": ["P11", "P07"],
+      "owner": "Руководитель HR-бренда",
+      "tool_access": {"owner_has_access": true, "operator": null},
+      "autonomy": "L1",
+      "ritual": "Когда проект утверждён; разбор на ближайшей планёрке",
+      "first_metric": "Время до готового брифа",
+      "inputs_from": ["owner", "brand-core"],
+      "outputs_to": ["owner"],
+      "needed_to_start": ["Ближайший проект: хоккейный турнир с семьями или стипендии для колледжа", "Правило: без данных о детях и студентах"],
+      "why_now": "Два проекта в планах; низкая боль"
+    }
+  ],
+  "data_first": [
+    {"process": "P06", "library_id": "design-production", "owner": "Дизайнер", "unlock": "Оценка часов, исходники макетов и список форматов, доступ к инструменту, разговор о роли"},
+    {"process": "P12", "library_id": "contractor-operations", "owner": null, "unlock": "Владелец процесса и место, где ведутся заказы и сроки"}
+  ],
+  "human": [
+    {"process": "P07", "reason": "Отношения с колледжами; студенты, в том числе несовершеннолетние", "fed_by": "project-briefs"}
+  ],
+  "pipelines": [
+    {
+      "id": "review-answer",
+      "title": "Отзыв → ответ",
+      "trigger": "Еженедельная выгрузка отзывов от владельца",
+      "steps": [
+        {"from": "owner", "to": "coordinator", "what": "Передаёт выгрузку отзывов"},
+        {"from": "coordinator", "to": "review-monitoring", "what": "Ставит задачу на дайджест"},
+        {"from": "review-monitoring", "to": "owner", "what": "Дайджест к понедельничной планёрке"},
+        {"from": "owner", "to": "coordinator", "what": "Отзывы, на которые отвечаем"},
+        {"from": "coordinator", "to": "review-response-drafting", "what": "Ставит задачу на черновики"},
+        {"from": "brand-core", "to": "review-response-drafting", "what": "Голос, красные линии, подтверждённые факты"},
+        {"from": "review-response-drafting", "to": "quality-gate", "what": "Черновики ответов"},
+        {"from": "quality-gate", "to": "owner", "what": "Черновики с проверкой"},
+        {"from": "owner", "to": "log", "what": "Решение и причина; публикует ответ сам"}
+      ]
+    },
+    {
+      "id": "story",
+      "title": "История сотрудника",
+      "trigger": "Обезличенная расшифровка интервью от владельца",
+      "steps": [
+        {"from": "owner", "to": "coordinator", "what": "Передаёт расшифровку"},
+        {"from": "coordinator", "to": "employee-stories", "what": "Ставит задачу"},
+        {"from": "brand-core", "to": "employee-stories", "what": "EVP, голос и подтверждённые факты"},
+        {"from": "employee-stories", "to": "quality-gate", "what": "Черновик и пакет на согласование"},
+        {"from": "quality-gate", "to": "owner", "what": "Черновик с проверкой"},
+        {"from": "owner", "to": "log", "what": "Решение и причина; отправляет герою и руководителю на согласование сам"}
+      ]
+    },
+    {
+      "id": "quarterly-report",
+      "title": "Квартальный отчёт",
+      "trigger": "За неделю до встречи с HR-директором",
+      "steps": [
+        {"from": "lead", "to": "coordinator", "what": "Передаёт выгрузки за квартал"},
+        {"from": "coordinator", "to": "eb-metrics-report", "what": "Ставит задачу"},
+        {"from": "review-monitoring", "to": "eb-metrics-report", "what": "Сводка по отзывам за квартал"},
+        {"from": "log", "to": "eb-metrics-report", "what": "Что вышло: истории, ответы"},
+        {"from": "brand-core", "to": "eb-metrics-report", "what": "Факты со статусами и видами"},
+        {"from": "eb-metrics-report", "to": "quality-gate", "what": "Черновик отчёта"},
+        {"from": "quality-gate", "to": "lead", "what": "Отчёт с проверкой каждой цифры"},
+        {"from": "lead", "to": "log", "what": "Решение и причина; показывает HR-директору сам"}
+      ]
+    },
+    {
+      "id": "brand-core-loop",
+      "title": "Петля бренд-ядра",
+      "trigger": "Контроль качества нашёл цифру без подтверждённого источника или расхождение",
+      "steps": [
+        {"from": "quality-gate", "to": "lead", "what": "Предлагает правку ядра"},
+        {"from": "lead", "to": "brand-core", "what": "Утверждает и вносит правку"},
+        {"from": "brand-core", "to": "review-response-drafting", "what": "Обновлённое ядро"},
+        {"from": "brand-core", "to": "employee-stories", "what": "Обновлённое ядро"},
+        {"from": "brand-core", "to": "eb-metrics-report", "what": "Обновлённое ядро"},
+        {"from": "lead", "to": "log", "what": "Решение о правке"}
+      ]
+    },
+    {
+      "id": "learning-loop",
+      "title": "Петля обучения",
+      "trigger": "Решения владельцев за две недели",
+      "steps": [
+        {"from": "owner", "to": "log", "what": "Каждое решение с причиной"},
+        {"from": "log", "to": "adoption-coach", "what": "Что принято, что правили и почему"},
+        {"from": "adoption-coach", "to": "lead", "what": "Пульс и предложения к ретро"},
+        {"from": "lead", "to": "log", "what": "Решения ретро"}
+      ]
+    }
+  ]
+}

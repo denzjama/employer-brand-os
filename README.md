@@ -4,7 +4,7 @@
 
 Employer Brand OS is a Claude Code plugin. It diagnoses how your EB function works, decides with you where agents take the work, where they assist and where people stay in charge, and proposes an agent team with a human owner and a ritual for every agent. It is the next step after [Employer Brand Auditor](https://github.com/denzjama/employer-brand-auditor) and keeps its rule: **no evidence → no claim.**
 
-Status: **v0.2.0 — Phase 1 (diagnosis) and Phase 2 (team assembly).** The adaptation loop (retro) is designed in [`ARCHITECTURE.md`](ARCHITECTURE.md) and comes next.
+Status: **v0.2.1 — Phase 1 (diagnosis) and Phase 2 (team assembly).** The adaptation loop (retro) is designed in [`ARCHITECTURE.md`](ARCHITECTURE.md) and comes next.
 
 ## Install
 
@@ -55,6 +55,8 @@ Open Claude Code in an empty folder for your workspace (not inside the plugin) a
 | [`library/`](library/) | Catalogue of Employer Brand processes that agents are built from |
 | [`skills/`](skills/) | Claude Code skills: `eb-setup`, `brand-core`, `function-diagnosis`, `team-assembly` |
 | [`hooks/`](hooks/) | Write guard and run log for team workspaces |
+| [`demo/`](demo/README.md) | A fictional employer with full materials, 15 built-in traps, and snapshots of an end-to-end run |
+| [`tests/`](tests/) · [`evals/`](evals/README.md) | Script tests (no model calls) and behavioural evals for `claude plugin eval` |
 | [`templates/`](templates/) | Overview page, team roster format, canonical agent sample, ritual commands |
 | [`scripts/`](scripts/) | Workspace setup, inventory, text extraction (docx, pptx, xlsx, html), overview builder, validator |
 

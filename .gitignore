@@ -2,4 +2,6 @@
 __pycache__/
 *.pyc
 # Client workspaces never live in this repository
-eb/
+/eb/
+# Eval run results (keep a chosen summary in evals/README.md instead)
+evals/results/

@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HR-бренд «Полярной гавани»: команда агентов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Onest:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:light; --bg:#FFFFFF; --paper:#FFFFFF; --ink:#111111; --muted:#5A5A5A; --line:#D6D6D6;
+  --green:#21A038; --violet:#6B4EFF; --sun:#FFC63A; --coral:#FF6B57; --sky:#3AA8F5; --rose:#E85A9B; --lime:#B7E36A;
+}
+:root[data-theme="dark"]{ color-scheme:dark; --bg:#151515; --paper:#1F1F1F; --ink:#F2F2F2; --muted:#ABABAB; --line:#3A3A3A; }
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Onest",system-ui,sans-serif;font-size:17px;line-height:1.55;overflow-x:hidden}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+@media(min-width:720px){.wrap{padding:0 32px}}
+h1,h2,h3{font-family:"Unbounded","Onest",sans-serif;letter-spacing:-.01em;margin:0}
+h2{font-weight:700;font-size:clamp(1.5rem,3.4vw,2.4rem);line-height:1.1;margin-bottom:12px}
+p{margin:0 0 .8em;max-width:64ch}
+.muted{color:var(--muted)}
+section{padding:64px 0}
+:focus-visible{outline:3px solid var(--violet);outline-offset:3px;border-radius:6px}
+.btn{font:inherit;font-weight:500;font-size:.95rem;color:var(--ink);background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer;box-shadow:0 2px 0 var(--ink)}
+.btn[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.theme{position:absolute;top:16px;right:16px}
+.hero{padding:56px 0 8px;position:relative}
+.hero h1{font-weight:900;font-size:clamp(1.55rem,8vw,5rem);line-height:.98;max-width:14ch}
+.hero h1 .one{display:inline-block;background:var(--ink);color:var(--bg);padding:0 .18em;border-radius:.12em;transform:rotate(-2deg)}
+.hero .lede{font-size:1.2rem;margin-top:22px;max-width:52ch}
+.stamp{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-weight:500;font-size:.95rem;background:var(--paper);border:2px solid var(--ink);border-radius:999px;padding:6px 14px;box-shadow:0 2px 0 var(--ink)}
+.stamp i{width:10px;height:10px;border-radius:50%;background:var(--green)}
+.flow{background:var(--paper);border:2.5px solid var(--ink);border-radius:26px;box-shadow:0 7px 0 var(--ink);padding:18px;margin-top:28px}
+.scen{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.flowgrid{display:grid;gap:18px}
+@media(min-width:1000px){.flowgrid{grid-template-columns:minmax(0,1.75fr) minmax(0,1fr);align-items:start}}
+.netwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+svg.net{width:100%;min-width:640px;height:auto;display:block}
+.edge{stroke:var(--line);stroke-width:2;fill:none}
+.edge.on{stroke:var(--ink);stroke-width:3.5;marker-end:url(#arr)}
+.edge.now{stroke:var(--violet);stroke-width:5;marker-end:url(#arrv)}
+@media (prefers-reduced-motion:no-preference){.edge.now{stroke-dasharray:10 8;animation:run .7s linear infinite}@keyframes run{to{stroke-dashoffset:-18}}}
+.nd rect,.nd circle{stroke:var(--ink);stroke-width:2.5;transition:opacity .2s}
+.nd text{font-size:19px;font-weight:600;fill:var(--ink)}
+.nd.dim{opacity:.35}
+.nd.lit rect,.nd.lit circle{stroke-width:4}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s;display:grid;gap:8px}
+.steps li{counter-increment:s;display:grid;grid-template-columns:30px 1fr;gap:10px;font-size:.95rem;opacity:.35;transition:opacity .2s}
+.steps li::before{content:counter(s);font-family:"Unbounded";font-weight:700;font-size:.85rem;width:28px;height:28px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center}
+.steps li.done,.steps li.now{opacity:1}
+.steps li.now::before{background:var(--violet);color:#fff;border-color:var(--violet)}
+.side h3{font-size:1.1rem;margin-bottom:6px}
+.side .sub{font-size:.92rem;color:var(--muted);margin-bottom:14px}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.rules{display:grid;gap:10px;margin-top:22px}
+@media(min-width:760px){.rules{grid-template-columns:repeat(4,1fr)}}
+.rule{border:2px solid var(--ink);border-radius:16px;padding:12px 14px;background:var(--paper);font-size:.9rem}
+.rule b{font-family:"Unbounded";font-weight:700;font-size:.92rem;display:block;margin-bottom:4px}
+.deck{display:grid;gap:22px;grid-template-columns:1fr}
+@media(min-width:640px){.deck{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1000px){.deck{grid-template-columns:repeat(3,1fr)}}
+.card{perspective:1400px;height:440px}
+.card button.flip{all:unset;display:block;width:100%;height:100%;cursor:pointer;border-radius:22px}
+.card button.flip:focus-visible{outline:3px solid var(--violet);outline-offset:4px}
+.inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d}
+.card.on .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:2.5px solid var(--ink);border-radius:22px;background:var(--paper);box-shadow:0 6px 0 var(--ink);overflow:hidden;display:flex;flex-direction:column}
+.back{transform:rotateY(180deg);padding:22px}
+.top{background:var(--c);padding:18px 20px 16px;position:relative;border-bottom:2.5px solid var(--ink);color:#0E1A14}
+.top .no{position:absolute;top:14px;right:16px;font-family:"Unbounded";font-weight:900;font-size:2.4rem;line-height:1;opacity:.35}
+.top h3{font-weight:700;font-size:1.2rem;line-height:1.15;margin:0 0 4px;max-width:85%}
+.top .role{font-size:.9rem;font-weight:500}
+.body{padding:16px 20px 18px;display:flex;flex-direction:column;gap:10px;flex:1;font-size:.9rem;overflow:auto}
+.body b{display:block;font-weight:700;font-size:.78rem;color:var(--muted)}
+.links{display:flex;flex-wrap:wrap;gap:6px}
+.links span{border:1.5px solid var(--ink);border-radius:999px;padding:1px 9px;font-size:.8rem}
+.turn{margin-top:auto;font-size:.82rem;color:var(--muted)}
+.back h3{font-size:1rem;margin:0 0 8px}
+.back ul{margin:0 0 14px;padding-left:1.1em;font-size:.92rem}
+.back li{margin-bottom:5px}
+@media (prefers-reduced-motion:reduce){.inner{transition:none}}
+.legend{display:flex;flex-wrap:wrap;gap:16px;font-size:.92rem;margin:6px 0 18px}
+.sw{display:inline-block;width:16px;height:16px;border-radius:4px;border:2px solid var(--ink);vertical-align:-3px;margin-right:6px}
+.waffle{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:8px}
+.sq{all:unset;box-sizing:border-box;cursor:pointer;aspect-ratio:1/1;border:2.5px solid var(--ink);border-radius:14px;padding:10px;display:flex;flex-direction:column;justify-content:space-between;font-size:.8rem;line-height:1.2;font-weight:500;color:#0E1A14;overflow:hidden}
+.sq.A{background:var(--green)}
+.sq.B{background:#fff;background-image:repeating-linear-gradient(135deg,rgba(33,160,56,.28) 0 6px,transparent 6px 12px)}
+.sq.C{background:var(--ink);color:var(--bg)}
+.sq.w1{box-shadow:0 0 0 4px var(--sun)}
+.sq .p{font-family:"Unbounded";font-weight:900;font-size:1.3rem}
+.sq[aria-pressed="true"]{outline:3px solid var(--violet);outline-offset:3px}
+.why{margin-top:16px;min-height:84px;background:var(--paper);border:2.5px solid var(--ink);border-radius:16px;padding:14px 18px;box-shadow:0 4px 0 var(--ink)}
+.why strong{font-family:"Unbounded";font-weight:700;font-size:1rem}
+.club{display:grid;gap:20px;margin-top:20px}
+@media(min-width:900px){.club{grid-template-columns:1.1fr 1fr}}
+.panel{background:var(--paper);border:2.5px solid var(--ink);border-radius:22px;padding:20px;box-shadow:0 6px 0 var(--ink)}
+.panel h3{font-size:1.05rem;margin-bottom:8px}
+.squads{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-top:12px}
+.squad{border:2px solid var(--ink);border-radius:14px;padding:12px;background:var(--c);color:#0E1A14}
+.squad b{font-family:"Unbounded";font-weight:900;font-size:2.1rem;line-height:1;display:block}
+.squad span{font-size:.85rem;font-weight:500;overflow-wrap:anywhere;hyphens:auto}
+.club>*,.flowgrid>*,.ready>*{min-width:0}
+.ready{display:grid;gap:16px;margin-top:20px}
+@media(min-width:860px){.ready{grid-template-columns:repeat(3,1fr)}}
+.ready h3{font-weight:700;font-size:1rem;margin:0 0 6px}
+.ready p{font-size:.93rem;margin:0}
+.tag{display:inline-block;font-size:.8rem;font-weight:700;border-radius:999px;padding:2px 10px;margin-bottom:8px}
+.tag.ok,.tag.rule{background:var(--green);color:#fff}
+.tag.todo{background:var(--sun);color:#0E1A14}
+footer{padding:40px 0 64px;color:var(--muted);font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <button class="btn theme" id="theme" aria-pressed="false"></button>
+  <h1 id="title"></h1>
+  <p class="lede" id="lede"></p>
+  <span class="stamp" id="stampWrap"><i></i><span id="stamp"></span></span>
+  <div class="flow">
+    <div class="scen" id="scen" role="group"></div>
+    <div class="flowgrid">
+      <div class="netwrap"><svg class="net" id="net" role="img">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--ink)"/></marker>
+          <marker id="arrv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#6B4EFF"/></marker>
+        </defs>
+        <g id="edges"></g><g id="nodes"></g>
+      </svg></div>
+      <div class="side">
+        <h3 id="sTitle"></h3>
+        <div class="sub" id="sSub"></div>
+        <ol class="steps" id="steps"></ol>
+        <div class="ctrl"><button class="btn" id="play"></button><button class="btn" id="all"></button></div>
+      </div>
+    </div>
+  </div>
+  <div class="rules" id="rules"></div>
+</header>
+<section aria-labelledby="h-deck"><h2 id="h-deck"></h2><p class="muted" id="deckNote"></p><div class="deck" id="deck"></div></section>
+<section aria-labelledby="h-club"><h2 id="h-club"></h2>
+  <div class="club">
+    <div class="panel"><h3 id="fHead"></h3><div class="squads" id="squads"></div><p class="muted" id="fContext" style="font-size:.93rem;margin-top:14px"></p></div>
+    <div class="panel"><h3 id="fPressTitle"></h3><p id="fPress" style="font-size:.95rem;margin:0"></p></div>
+  </div>
+</section>
+<section aria-labelledby="h-map"><h2 id="h-map"></h2><div class="legend" id="legend"></div><div class="waffle" id="waffle"></div><div class="why" id="why" aria-live="polite"></div></section>
+<section aria-labelledby="h-ready"><h2 id="h-ready"></h2><div class="ready" id="ready"></div></section>
+<footer id="footer"></footer>
+</div>
+<script type="application/json" id="data">{"lang": "ru", "title": "HR-бренд «Полярной гавани»: команда агентов", "stamp": "Диагностика функции, октябрь 2026. Черновик: ждёт проверки с владельцами", "footer": "Employer Brand OS, фаза 1 — диагностика функции. Компания вымышленная. Локальный файл, не для публикации без решения руководителя.", "ui": {"badge": "черновик", "lede": "Агенты передают работу друг другу через координатора и общее бренд-ядро. Каждый внешний черновик проходит контроль качества, решает всегда человек. Выберите сценарий и посмотрите, как задача проходит по команде.", "scenariosLabel": "Сценарии", "schemeLabel": "Схема: люди, координатор, агенты, бренд-ядро и журнал; подсвечен путь выбранного сценария", "play": "Пройти по шагам", "showAll": "Показать весь путь", "themeDark": "Тёмная тема", "themeLight": "Светлая тема", "rules": [{"title": "Координатор", "text": "Разбирает задачу и собирает конвейер из агентов."}, {"title": "Бренд-ядро", "text": "Общая память: факты с источниками, EVP, голос, красные линии."}, {"title": "Контроль качества", "text": "Через него проходит каждый внешний черновик."}, {"title": "Журнал", "text": "Каждое «принять, править, отклонить» с причиной."}], "deckTitle": "Состав первой волны", "deckNote": "У каждого агента есть владелец и ритуал. На обороте карточки — чего агент не делает.", "flipHint": "Переверните ↻", "flipLabel": "перевернуть карточку", "cardWith": "Работает в паре с", "cardOwner": "Владелец", "cardWhen": "Когда работает", "cardGoal": "Успех", "cardNot": "Чего не делает", "cardRuleTitle": "Главное правило", "cardRule": "Готовит агент, решает человек. Наружу — только после контроля качества и утверждения владельца.", "functionTitle": "Для какой функции", "pressureTitle": "Что мешает сейчас", "mapTitle": "{n} процессов: кто ведёт", "legend": {"A": "Ведёт агент, человек утверждает", "B": "Ведёт человек, агент помогает", "C": "Остаётся за людьми", "w1": "Первая волна"}, "whyHint": "Нажмите на любой квадрат", "priorityNote": "Цифра — приоритет от 3 до 9: объём работы, боль и желание владельца.", "zone": {"A": "ведёт агент", "B": "ведёт человек, агент помогает", "C": "остаётся за людьми"}, "wave1": "первая волна", "priority": "приоритет", "readyTitle": "Готовность к старту", "status": {"ok": "Есть", "todo": "Нужно", "rule": "Правило"}}, "nodes": {"owner": {"label": "Владелец агента", "kind": "person"}, "lead": {"label": "Руководитель HR-бренда", "kind": "person"}, "coord": {"label": "Координатор", "kind": "coord"}, "reviews": {"label": "Мониторинг отзывов", "kind": "agent"}, "answers": {"label": "Ответы на отзывы", "kind": "agent"}, "stories": {"label": "Истории сотрудников", "kind": "agent"}, "report": {"label": "Отчёт для HR-директора", "kind": "agent"}, "qa": {"label": "Контроль качества", "kind": "agent"}, "coach": {"label": "Коуч внедрения", "kind": "agent"}, "core": {"label": "Бренд-ядро", "kind": "store"}, "log": {"label": "Журнал", "kind": "store"}}, "scenarios": [{"title": "Отзыв → ответ", "sub": "От выгрузки отзывов до ответа, который публикует человек", "steps": [{"edges": [["owner", "coord"]], "text": "Менеджер по репутации передаёт недельную выгрузку отзывов"}, {"edges": [["coord", "reviews"]], "text": "Координатор ставит задачу агенту мониторинга"}, {"edges": [["reviews", "owner"]], "text": "Дайджест — к планёрке в понедельник; владелец выбирает, на что отвечать"}, {"edges": [["coord", "answers"]], "text": "Выбранные отзывы уходят агенту ответов"}, {"edges": [["core", "answers"]], "text": "Агент берёт голос, красные линии и подтверждённые факты"}, {"edges": [["answers", "qa"]], "text": "Черновики — на контроль качества"}, {"edges": [["qa", "owner"]], "text": "Владелец правит и сам публикует ответ"}, {"edges": [["owner", "log"]], "text": "Решение и причина — в журнал"}]}, {"title": "История сотрудника", "sub": "От расшифровки интервью до согласованного текста", "steps": [{"edges": [["owner", "coord"]], "text": "Контент-менеджер передаёт обезличенную расшифровку"}, {"edges": [["coord", "stories"]], "text": "Координатор ставит задачу агенту историй"}, {"edges": [["core", "stories"]], "text": "EVP, голос и подтверждённые факты из ядра"}, {"edges": [["stories", "qa"]], "text": "Черновик и пакет на согласование — на контроль качества"}, {"edges": [["qa", "owner"]], "text": "Владелец правит и согласует с героем и руководителем"}, {"edges": [["owner", "log"]], "text": "Решение и причина — в журнал"}]}, {"title": "Квартальный отчёт", "sub": "Вместо 2–3 дней ручной сборки (оценка руководителя)", "steps": [{"edges": [["lead", "coord"]], "text": "Руководитель передаёт выгрузки за квартал"}, {"edges": [["coord", "report"]], "text": "Координатор ставит задачу агенту отчёта"}, {"edges": [["reviews", "report"], ["log", "report"]], "text": "Сводка по отзывам и журнал: что вышло за квартал"}, {"edges": [["core", "report"]], "text": "Факты со статусами и видами"}, {"edges": [["report", "qa"]], "text": "Контроль качества проверяет каждую цифру: не подана ли цель как результат"}, {"edges": [["qa", "lead"]], "text": "Руководитель правит и сам показывает отчёт HR-директору"}]}, {"title": "Петля бренд-ядра", "sub": "Ошибка, найденная один раз, исправляется для всех", "steps": [{"edges": [["qa", "lead"]], "text": "Контроль качества нашёл цифру без источника и предлагает правку"}, {"edges": [["lead", "core"]], "text": "Руководитель утверждает и вносит правку в ядро"}, {"edges": [["core", "answers"], ["core", "stories"], ["core", "report"]], "text": "Обновлённое ядро сразу читают все агенты"}]}, {"title": "Петля обучения", "sub": "Система учится на решениях людей", "steps": [{"edges": [["owner", "log"]], "text": "Каждое решение владельца с причиной — в журнал"}, {"edges": [["log", "coach"]], "text": "Коуч внедрения собирает, что помогло и что мешало"}, {"edges": [["coach", "lead"]], "text": "Раз в две недели ретро решает, что менять в агентах"}]}], "agents": [{"node": "reviews", "name": "Мониторинг отзывов", "role": "Новые отзывы hh.ru и Dream Job за неделю", "owner": "Менеджер по репутации", "when": "Дайджест к понедельничной планёрке", "with": ["Ответы на отзывы", "Отчёт для HR-директора"], "goal": "Быстрее от отзыва до реакции команды", "not": ["Не связывается с авторами", "Не угадывает, кто написал отзыв", "Не цитирует отзывы с именами"]}, {"node": "answers", "name": "Ответы на отзывы", "role": "Черновики ответов в голосе бренда", "owner": "Менеджер по репутации", "when": "Сразу после дайджеста", "with": ["Мониторинг отзывов", "Контроль качества"], "goal": "Больше отзывов с ответом", "not": ["Не публикует ответы", "Не спорит с автором", "Не использует неподтверждённые факты"]}, {"node": "stories", "name": "Истории сотрудников", "role": "Из интервью — в историю и пакет на согласование", "owner": "Контент-менеджер по историям", "when": "Статус — на понедельничной планёрке", "with": ["Бренд-ядро", "Контроль качества"], "goal": "Меньше дней от интервью до согласованного текста", "not": ["Не придумывает цитаты и цифры", "Не публикует без согласия героя"]}, {"node": "report", "name": "Отчёт для HR-директора", "role": "Черновик квартального отчёта из пяти источников", "owner": "Руководитель HR-бренда", "when": "За неделю до квартальной встречи", "with": ["Мониторинг отзывов", "Контроль качества"], "goal": "Отчёт не съедает три дня", "not": ["Не подаёт цели как результаты", "Не берёт персональные данные"]}, {"node": "qa", "name": "Контроль качества", "role": "Проверяет внешние черновики и цифры отчёта", "owner": "Руководитель HR-бренда", "when": "Внутри каждого конвейера", "with": ["Все агенты", "Бренд-ядро"], "goal": "Больше черновиков проходят с первого раза", "not": ["Не переписывает за владельца", "Не пропускает неподтверждённые цифры"]}, {"node": "coach", "name": "Коуч внедрения", "role": "Помогает начать и собирает обратную связь", "owner": "Руководитель HR-бренда", "when": "10–15 минут в конце планёрки", "with": ["Журнал", "Все владельцы"], "goal": "Агенты реально используются", "not": ["Не оценивает людей", "Не требует новых встреч"]}], "function": {"headline": "HR-бренд, 6 человек", "teams": [{"n": 3, "name": "Контент и соцсети"}, {"n": 1, "name": "Репутация и исследования"}, {"n": 1, "name": "Дизайн"}, {"n": 1, "name": "Руководитель"}], "context": "Подчиняется HR-директору. Задача — чтобы на терминал шли и оставались операторы кранов и докеры. Заказчики — рекрутмент и начальники терминалов.", "pressure": "На отзывы не отвечают, истории ждут согласований 3–4 недели, квартальный отчёт собирается вручную из пяти источников. Перегружены контент-менеджеры и дизайнер."}, "processes": [{"zone": "A", "name": "Квартальный отчёт", "priority": 7, "wave1": true, "why": "2–3 дня в квартал (оценка руководителя), одна структура каждый раз."}, {"zone": "B", "name": "Ответы на отзывы", "priority": 7, "wave1": true, "why": "Сейчас не отвечают; владелец сама попросила помощи."}, {"zone": "B", "name": "Истории сотрудников", "priority": 7, "wave1": true, "why": "Около 6 часов на историю и 3–4 недели согласований."}, {"zone": "A", "name": "Мониторинг отзывов", "priority": 6, "wave1": true, "why": "Отзывы читают раз в квартал; работа одинаковая."}, {"zone": "B", "name": "Дизайн-адаптации", "priority": 6, "wave1": false, "why": "Сначала данные: часы, исходники, форматы, разговор о роли."}, {"zone": "B", "name": "Посты в Telegram", "priority": 5, "wave1": false, "why": "План часто не выполняется; прошлая попытка с AI — «пресно и не про нас»."}, {"zone": "B", "name": "Карьерный сайт", "priority": 4, "wave1": false, "why": "Владелец перегружен, но пока не видит смысла."}, {"zone": "B", "name": "Рассылки для сотрудников", "priority": 4, "wave1": false, "why": "В рассылке уже была цель, поданная как результат."}, {"zone": "B", "name": "Спецпроекты с агентством", "priority": 4, "wave1": false, "why": "Брифы для турнира и стипендий; боли не названо."}, {"zone": "B", "name": "Подрядчики и документы", "priority": 4, "wave1": false, "why": "Сначала данные: нет владельца и места, где ведутся заказы."}, {"zone": "A", "name": "Контент-план", "priority": 3, "wave1": false, "why": "Раз в месяц, около 4 часов; владелец пока без доступа."}, {"zone": "C", "name": "Мероприятия для колледжей", "priority": 3, "wave1": false, "why": "Отношения с колледжами; там студенты, в том числе несовершеннолетние."}], "readiness": [{"status": "ok", "title": "Согласование безопасности", "text": "Инструмент согласован для команды, без персональных данных сотрудников. Для историй нужно решение: обезличивать расшифровки или согласовать отдельно."}, {"status": "todo", "title": "Доступы", "text": "Доступ есть у двоих из шести. Менеджер по репутации работает через оператора."}, {"status": "todo", "title": "Проверка с владельцами", "text": "Опросник готов: подтвердить, что агенты нужны, и выбрать первые задачи."}, {"status": "todo", "title": "Общая папка", "text": "Одно пространство с бренд-ядром, агентами и журналом."}, {"status": "todo", "title": "Подтверждённые факты", "text": "Пока ни один факт не подтверждён; черновики ответов и историй — только внутренние пробы."}, {"status": "rule", "title": "Люди публикуют", "text": "Ни один агент ничего не публикует и не отправляет сам."}]}</script>
+<script>
+"use strict";
+const D=JSON.parse(document.getElementById("data").textContent),U=D.ui;
+const $=id=>document.getElementById(id);
+function h(tag,props,kids){const e=document.createElement(tag);if(props)for(const k in props){if(k==="text")e.textContent=props[k];else if(k==="style")e.style.cssText=props[k];else e.setAttribute(k,props[k])}(kids||[]).forEach(c=>c&&e.appendChild(typeof c==="string"?document.createTextNode(c):c));return e}
+const PALETTE=["var(--sun)","var(--rose)","var(--sky)","var(--violet)","var(--green)","var(--coral)","var(--lime)"];
+
+/* theme: light by default, dark on request */
+function setTheme(dark){document.documentElement.dataset.theme=dark?"dark":"light";$("theme").setAttribute("aria-pressed",dark);$("theme").textContent=dark?U.themeLight:U.themeDark}
+$("theme").addEventListener("click",()=>setTheme(document.documentElement.dataset.theme!=="dark"));setTheme(false);
+
+/* hero */
+const t1=$("title");t1.textContent=D.title+" ";if(U.badge)t1.appendChild(h("span",{class:"one",text:U.badge}));
+$("lede").textContent=U.lede;if(D.stamp)$("stamp").textContent=D.stamp;else $("stampWrap").remove();
+$("scen").setAttribute("aria-label",U.scenariosLabel);$("net").setAttribute("aria-label",U.schemeLabel);
+$("play").textContent=U.play;$("all").textContent=U.showAll;
+U.rules.forEach(r=>$("rules").appendChild(h("div",{class:"rule"},[h("b",{text:r.title}),r.text])));
+
+/* layout: people on the left, coordinator in the centre, agents on a ring, stores below */
+const NS="http://www.w3.org/2000/svg",N=D.nodes,ids=Object.keys(N);
+const by=k=>ids.filter(i=>N[i].kind===k);
+const people=by("person"),agents=by("agent"),stores=by("store"),coord=by("coord");
+const W=1000,H=640,cx=610,cy=290,rx=300,ry=190;
+people.forEach((id,i)=>{const n=N[id];n.x??=105;n.y??=(H-80)*(i+1)/(people.length+1)});
+coord.forEach(id=>{N[id].x??=cx;N[id].y??=cy});
+agents.forEach((id,i)=>{const n=N[id],a=(-150+300*(agents.length>1?i/(agents.length-1):.5))*Math.PI/180;n.x??=cx+rx*Math.cos(a);n.y??=cy+ry*Math.sin(a);n.c??=PALETTE[i%PALETTE.length]});
+stores.forEach((id,i)=>{const n=N[id];n.x??=cx+(i-(stores.length-1)/2)*260;n.y??=H-50});
+ids.forEach(id=>{const n=N[id];if(n.kind==="person"||n.kind==="store"){n.w??=Math.max(150,n.label.length*11+36);n.h??=58}else n.r??=(n.kind==="coord"?62:44)});
+const net=$("net");net.setAttribute("viewBox",`0 0 ${W} ${H}`);
+function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+const rad=n=>n.r||Math.min(n.w,n.h)/2+14;
+const pairs=new Set();D.scenarios.forEach(s=>s.steps.forEach(st=>st.edges.forEach(([a,b])=>pairs.add(a+">"+b))));
+const edgeEl={};
+pairs.forEach(k=>{const [a,b]=k.split(">"),A=N[a],B=N[b];const dx=B.x-A.x,dy=B.y-A.y,d=Math.hypot(dx,dy)||1,ux=dx/d,uy=dy/d;
+  const x1=A.x+ux*rad(A),y1=A.y+uy*rad(A),x2=B.x-ux*(rad(B)+6),y2=B.y-uy*(rad(B)+6),mx=(x1+x2)/2-uy*18,my=(y1+y2)/2+ux*18;
+  edgeEl[k]=el("path",{class:"edge",d:`M${x1} ${y1} Q${mx} ${my} ${x2} ${y2}`},$("edges"))});
+const nodeEl={};
+ids.forEach(id=>{const n=N[id],g=el("g",{class:"nd"},$("nodes"));
+  if(n.kind==="person")el("rect",{x:n.x-n.w/2,y:n.y-n.h/2,width:n.w,height:n.h,rx:29,fill:"var(--paper)"},g);
+  else if(n.kind==="store")el("rect",{x:n.x-n.w/2,y:n.y-n.h/2,width:n.w,height:n.h,rx:10,fill:"var(--paper)","stroke-dasharray":"6 5"},g);
+  else if(n.kind==="coord")el("circle",{cx:n.x,cy:n.y,r:n.r,fill:"#0E1A14"},g);
+  else el("circle",{cx:n.x,cy:n.y,r:n.r,fill:n.c},g);
+  const inside=n.kind!=="agent",t=el("text",{x:n.x,y:inside?n.y+5:n.y+n.r+20,"text-anchor":"middle"},g);t.textContent=n.label;
+  if(n.kind==="coord")t.setAttribute("style","fill:#fff");nodeEl[id]=g});
+let cur=0,timer=null;
+function render(upto){
+  Object.values(edgeEl).forEach(e=>e.setAttribute("class","edge"));const lit=new Set();
+  D.scenarios[cur].steps.forEach((st,i)=>{if(i<upto)st.edges.forEach(([a,b])=>{edgeEl[a+">"+b].setAttribute("class","edge "+(i===upto-1?"now":"on"));lit.add(a);lit.add(b)})});
+  for(const k in nodeEl)nodeEl[k].setAttribute("class","nd "+(lit.has(k)?"lit":(upto===0?"":"dim")));
+  [...$("steps").children].forEach((li,i)=>li.className=i<upto-1?"done":(i===upto-1?"now":""))}
+function pick(i){cur=i;clearInterval(timer);timer=null;const s=D.scenarios[i];
+  [...$("scen").children].forEach((b,j)=>b.setAttribute("aria-pressed",j===i));
+  $("sTitle").textContent=s.title;$("sSub").textContent=s.sub||"";
+  $("steps").replaceChildren(...s.steps.map(st=>h("li",{text:st.text})));render(s.steps.length)}
+function play(){clearInterval(timer);let shown=0;render(0);const n=D.scenarios[cur].steps.length;
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches){render(n);return}
+  timer=setInterval(()=>{shown++;render(shown);if(shown>=n){clearInterval(timer);timer=null}},1300)}
+D.scenarios.forEach((s,i)=>{const b=h("button",{class:"btn",text:s.title});b.addEventListener("click",()=>{pick(i);play()});$("scen").appendChild(b)});
+$("play").addEventListener("click",play);$("all").addEventListener("click",()=>{clearInterval(timer);render(D.scenarios[cur].steps.length)});
+if(D.scenarios.length){pick(0);play()}
+
+/* agent cards */
+$("h-deck").textContent=U.deckTitle;$("deckNote").textContent=U.deckNote;
+D.agents.forEach((a,i)=>{
+  const c=a.color||(N[a.node]&&N[a.node].c)||PALETTE[i%PALETTE.length];
+  const front=h("div",{class:"face"},[
+    h("div",{class:"top"},[h("span",{class:"no",text:String(i+1).padStart(2,"0")}),h("h3",{text:a.name}),h("div",{class:"role",text:a.role})]),
+    h("div",{class:"body"},[
+      h("div",{},[h("b",{text:U.cardWith}),h("div",{class:"links"},(a.with||[]).map(x=>h("span",{text:x})))]),
+      h("div",{},[h("b",{text:U.cardOwner}),a.owner]),h("div",{},[h("b",{text:U.cardWhen}),a.when]),h("div",{},[h("b",{text:U.cardGoal}),a.goal]),
+      h("div",{class:"turn",text:U.flipHint})])]);
+  const back=h("div",{class:"face back"},[h("h3",{text:U.cardNot}),h("ul",{},(a.not||[]).map(x=>h("li",{text:x}))),h("h3",{text:U.cardRuleTitle}),h("p",{text:U.cardRule,style:"font-size:.92rem"})]);
+  const btn=h("button",{class:"flip","aria-pressed":"false","aria-label":a.name+": "+U.flipLabel},[h("div",{class:"inner"},[front,back])]);
+  const card=h("div",{class:"card",style:"--c:"+c},[btn]);
+  btn.addEventListener("click",()=>{const on=card.classList.toggle("on");btn.setAttribute("aria-pressed",on)});$("deck").appendChild(card)});
+
+/* function */
+const F=D.function;$("h-club").textContent=U.functionTitle;$("fHead").textContent=F.headline;$("fContext").textContent=F.context||"";
+F.teams.forEach((t,i)=>$("squads").appendChild(h("div",{class:"squad",style:"--c:"+PALETTE[(i+2)%PALETTE.length]},[h("b",{text:String(t.n)}),h("span",{text:t.name})])));
+$("fPressTitle").textContent=U.pressureTitle;$("fPress").textContent=F.pressure||"";
+
+/* processes by zone */
+$("h-map").textContent=U.mapTitle.replace("{n}",D.processes.length);
+[["A","background:var(--green)"],["B","background:#fff;background-image:repeating-linear-gradient(135deg,rgba(33,160,56,.4) 0 3px,transparent 3px 6px)"],["C","background:var(--ink)"],["w1","background:var(--sun)"]]
+  .forEach(([k,s])=>$("legend").appendChild(h("span",{},[h("i",{class:"sw",style:s}),U.legend[k]])));
+const why=$("why");function hint(){why.replaceChildren(h("strong",{text:U.whyHint}),h("br"),h("span",{class:"muted",text:U.priorityNote}))}hint();
+D.processes.forEach(p=>{const b=h("button",{class:`sq ${p.zone}${p.wave1?" w1":""}`,"aria-pressed":"false"},[h("span",{text:p.name}),h("span",{class:"p",text:String(p.priority)})]);
+  b.addEventListener("click",()=>{$("waffle").querySelectorAll(".sq").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");
+    why.replaceChildren(h("strong",{text:p.name}),h("br"),h("span",{class:"muted",text:U.zone[p.zone]+(p.wave1?", "+U.wave1:"")+", "+U.priority+" "+p.priority}),h("p",{text:p.why,style:"margin:.5em 0 0"}))});
+  $("waffle").appendChild(b)});
+
+/* readiness */
+$("h-ready").textContent=U.readyTitle;
+D.readiness.forEach(r=>$("ready").appendChild(h("div",{class:"panel"},[h("span",{class:"tag "+r.status,text:U.status[r.status]}),h("h3",{text:r.title}),h("p",{text:r.text})])));
+$("footer").textContent=D.footer||"";
+</script>
+</body>
+</html>

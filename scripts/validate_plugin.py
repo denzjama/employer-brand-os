@@ -234,10 +234,36 @@ def check_phase2() -> None:
             err("render_team.py is not deterministic: a second run changed CLAUDE.md")
 
 
+def check_demo_and_evals() -> None:
+    import subprocess
+
+    for rel in ("demo/README.md", "demo/answer-key.md", "demo/interview.md", "demo/build_materials.py",
+                "evals/README.md", "evals/_lib/setup.sh", "tests/test_scripts.py"):
+        if not (ROOT / rel).is_file():
+            err(f"missing {rel}")
+    if not any((ROOT / "demo/materials").glob("*")):
+        err("demo/materials is empty: run python3 demo/build_materials.py")
+    for case in sorted(p for p in (ROOT / "evals").iterdir() if p.is_dir() and not p.name.startswith(("_", "results"))):
+        for f in ("case.yaml", "prompt.md", "scaffold.sh"):
+            if not (case / f).is_file():
+                err(f"evals/{case.name}: missing {f}")
+        if not list((case / "graders").glob("*.md")):
+            err(f"evals/{case.name}: no graders")
+        scaffold = (case / "scaffold.sh").read_text(encoding="utf-8") if (case / "scaffold.sh").is_file() else ""
+        for snap in re.findall(r"snapshot (\S+)", scaffold):
+            if not (ROOT / "demo/run" / snap / "workspace/eb/status.md").is_file():
+                err(f"evals/{case.name}: snapshot demo/run/{snap} is missing")
+    tests = subprocess.run([sys.executable, "-m", "unittest", "discover", "-s", str(ROOT / "tests"), "-q"],
+                           capture_output=True, text=True, cwd=ROOT)
+    if tests.returncode != 0:
+        err("script tests failed:\n" + tests.stderr[-2000:])
+
+
 def main() -> int:
     check_required()
     check_templates()
     check_phase2()
+    check_demo_and_evals()
     check_manifests()
     check_skills()
     check_library()
