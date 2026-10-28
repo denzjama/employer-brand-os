@@ -4,7 +4,8 @@
 Usage:
   python3 record_decision.py <workspace> --agent ID --output PATH
       --decision ACCEPTED|EDITED|REJECTED [--substantive yes|no]
-      --reason TEXT --by ROLE [--operator ROLE]
+      (--reason TEXT | --no-reason) --by ROLE [--operator ROLE]
+      [--check PATH] [--facts-added TEXT]
 
 Writes one file per decision in eb/log/decisions/. Standard library only.
 """
@@ -14,6 +15,7 @@ import sys
 from pathlib import Path
 
 DECISIONS = ("ACCEPTED", "EDITED", "REJECTED")
+NO_REASON = "(no reason given)"
 
 
 def main() -> int:
@@ -23,9 +25,12 @@ def main() -> int:
     ap.add_argument("--output", required=True)
     ap.add_argument("--decision", required=True, choices=DECISIONS)
     ap.add_argument("--substantive", choices=("yes", "no"))
-    ap.add_argument("--reason", required=True)
+    ap.add_argument("--reason", default="")
+    ap.add_argument("--no-reason", action="store_true", help="the decider gave no reason (a question for the retro)")
     ap.add_argument("--by", required=True, help="the owner's role")
     ap.add_argument("--operator", help="the operator's role, if an operator recorded it")
+    ap.add_argument("--check", help="path of the quality-gate check the owner saw")
+    ap.add_argument("--facts-added", help="facts the owner added or corrected, in the owner's words")
     a = ap.parse_args()
 
     # The roster id, not the runtime name: "eb-employee-stories" -> "employee-stories".
@@ -34,8 +39,8 @@ def main() -> int:
     if a.decision == "EDITED" and not a.substantive:
         print("--substantive is required for EDITED (methodology/autonomy.md §3)", file=sys.stderr)
         return 2
-    if not a.reason.strip():
-        print("--reason must not be empty", file=sys.stderr)
+    if a.no_reason == bool(a.reason.strip()):
+        print("give either --reason with the decider's words or --no-reason", file=sys.stderr)
         return 2
     root = Path(a.workspace).expanduser().resolve()
     if not (root / "eb" / "status.md").is_file():
@@ -61,7 +66,12 @@ def main() -> int:
     ]
     if a.decision == "EDITED":
         lines.append(f"- Substantive: {a.substantive}")
-    lines += [f"- Decided by: {by}", "", "## Reason", "", a.reason.strip(), ""]
+    if a.check:
+        lines.append(f"- Check: {a.check}")
+    lines.append(f"- Decided by: {by}")
+    lines += ["", "## Reason", "", NO_REASON if a.no_reason else a.reason.strip(), ""]
+    if a.facts_added and a.facts_added.strip():
+        lines += ["## Facts added", "", a.facts_added.strip(), ""]
     path.write_text("\n".join(lines), encoding="utf-8")
     print(path.relative_to(root))
     return 0

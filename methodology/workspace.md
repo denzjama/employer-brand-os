@@ -25,7 +25,8 @@ The client's working folder: the folder in which the EB team runs the system. Al
     log/runs/                   one file per agent run (coordination.md §4)
     log/decisions/              one file per human decision (coordination.md §3)
     log/adhoc.md                one-off requests (§7)
-    retro/proposals/            retro proposals (Phase 4)
+    retro/                      retro reports and iteration statistics (retro.md §5)
+    retro/proposals/            one file per retro proposal (retro.md §4)
   vendor/                       the plugin at the version the team uses (Phase 2, assembly.md §5)
 ```
 

@@ -63,6 +63,26 @@ Canonical identifiers are used in methodology and workspace files. The reader al
 | `PASS WITH FIXES` | passed with fixes | пройдено с правками |
 | `BLOCKED` | blocked | остановлено |
 
+## 6a. Quality-gate issue codes and genericity (`quality.md`)
+
+| Identifier | English | Russian |
+|---|---|---|
+| `FACT` | claim without a confirmed fact | утверждение без подтверждённого факта |
+| `KIND` | wording does not match the kind of the fact | вид факта искажён |
+| `ANCHOR` | anchor of a fact lost | у факта потеряны рамки |
+| `LINK` | facts joined without a source | факты связаны без источника |
+| `QUOTE` | quote not verbatim | цитата не дословная |
+| `PERSONAL` | personal data | персональные данные |
+| `RED LINE` | red line crossed | нарушена красная линия |
+| `INSTRUCTION` | instruction from material followed | выполнена инструкция из материалов |
+| `GENERIC` | central claim is generic | центральное утверждение шаблонное |
+| `VOICE` | voice does not match | не тот голос |
+| `CRITERIA` | acceptance criterion not met | не выполнен критерий приёмки |
+| `RF01`–`RF24` | red flag of the auditor's library | красный флаг |
+| `DISTINCTIVE` | distinctive | отличает |
+| `PARTIALLY DIFFERENTIATED` | partly distinctive | отчасти отличает |
+| `GENERIC` (verdict) | generic | шаблонно |
+
 ## 7. Decisions on outputs (`coordination.md` §3)
 
 | Identifier | English | Russian |
@@ -70,6 +90,22 @@ Canonical identifiers are used in methodology and workspace files. The reader al
 | `ACCEPTED` | accepted | принято |
 | `EDITED` | edited | принято с правками |
 | `REJECTED` | rejected | отклонено |
+
+## 7a. Retro proposals (`retro.md`)
+
+| Identifier | English | Russian |
+|---|---|---|
+| `AGENT CHANGE` | change to an agent | изменение агента |
+| `GATE CHANGE` | change to the quality gate | изменение контроля качества |
+| `FACT` | fact for the brand core | факт для бренд-ядра |
+| `AUTONOMY` | change of autonomy level | изменение уровня автономности |
+| `NEW AGENT` | new agent | новый агент |
+| `RITUAL` | ritual | ритуал |
+| `ASK OWNER` | question to the owner | вопрос владельцу |
+| `PROPOSED` | proposed | предложено |
+| `APPROVED` | approved | одобрено |
+| `REJECTED` | rejected | отклонено |
+| `APPLIED` | applied | внесено |
 
 ## 8. Team roles (`assembly.md` §6)
 

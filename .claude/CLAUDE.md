@@ -4,7 +4,7 @@ Project instructions for Claude Code sessions working on this repository.
 
 ## What this project is
 
-Employer Brand OS is a Claude Code plugin (v0.2.2): a multi-agent system for an Employer Brand function. It works in four phases: diagnosis → team assembly → work → adaptation. This version ships Phase 1 (`eb-setup`, `brand-core`, `function-diagnosis`, the overview page) and Phase 2 (`team-assembly`, the reference agents and pipeline library in `library/`, the generator `scripts/render_team.py`, ritual command templates, and the plugin hooks that guard writes and log runs). `ARCHITECTURE.md` is the product design; read it before changing behaviour.
+Employer Brand OS is a Claude Code plugin (v0.3.0): a multi-agent system for an Employer Brand function. It works in four phases: diagnosis → team assembly → work → adaptation. This version ships Phase 1 (`eb-setup`, `brand-core`, `function-diagnosis`, the overview page), Phase 2 (`team-assembly`, the reference agents and pipeline library in `library/`, the generator `scripts/render_team.py`, ritual command templates, and the plugin hooks that guard writes and log runs), and Phases 3–4 (the quality gate on the Employer Brand Auditor method in `methodology/quality.md`, and the `retro` skill with `scripts/retro_stats.py`). `ARCHITECTURE.md` is the product design; read it before changing behaviour.
 
 ## Rules for changing the project
 

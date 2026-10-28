@@ -271,6 +271,64 @@ class TestLibrary(unittest.TestCase):
             command = (ws / ".claude/skills/story/SKILL.md").read_text(encoding="utf-8")
             self.assertIn("eb-quality-gate", command)
             self.assertIn("eb-employee-stories", command)
+            gate = (ws / ".claude/agents/eb-quality-gate.md").read_text(encoding="utf-8")
+            self.assertIn("## The quality-gate method", gate, "the gate carries the method without vendor/")
+            self.assertIn("### 4. Genericity test", gate)
+
+
+class TestRetro(unittest.TestCase):
+    """Retro statistics on the fictional team logs (demo/retro/README.md)."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.ws = Path(self.tmp.name) / "ws"
+        shutil.copytree(ROOT / "demo/run/stage-3-assembly/workspace", self.ws)
+        shutil.copytree(ROOT / "demo/retro/overlay", self.ws, dirs_exist_ok=True)
+        sys.path.insert(0, str(SCRIPTS))
+        import retro_stats
+        self.retro = retro_stats
+        import datetime
+        self.stats = retro_stats.collect(self.ws, datetime.date(2026, 11, 24), 14)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def signals(self, code):
+        return [s for s in self.stats["signals"] if s["signal"] == code]
+
+    def test_answer_key_signals(self):
+        targets = {(s["signal"], s["target"]) for s in self.stats["signals"]}
+        for expected in [("S1", "employee-stories"), ("S2", "brand-core"), ("S3", "eb-metrics-report"),
+                         ("S6", "eb-metrics-report"), ("S7", "employee-stories"), ("S8", "quality-gate"),
+                         ("S9", "review-monitoring")]:
+            self.assertIn(expected, targets)
+        self.assertEqual(len(self.signals("S8")), 1, "only the story rejected for an anchor")
+        self.assertIn("Учебный центр", self.signals("S2")[0]["text"])
+
+    def test_external_agent_gets_no_autonomy_signal(self):
+        self.assertFalse(self.signals("S4"))
+        row = next(r for r in self.stats["rows"] if r["agent"] == "review-response-drafting")
+        self.assertEqual(row["streak"], 12)
+        self.assertTrue(any("review-response-drafting" in n and "capped at L1" in n for n in self.stats["notes"]))
+
+    def test_gate_codes_and_attempts(self):
+        row = next(r for r in self.stats["rows"] if r["agent"] == "employee-stories")
+        self.assertEqual(row["codes"]["QUOTE"], 9)
+        self.assertEqual(row["not_passed"], 3)
+
+    def test_legacy_check_without_header_is_counted(self):
+        import datetime
+        stats = self.retro.collect(ROOT / "demo/run/stage-3-assembly/workspace", datetime.date(2026, 10, 27), 14)
+        row = next(r for r in stats["rows"] if r["agent"] == "review-response-drafting")
+        self.assertEqual((row["checks"], row["first_pass"]), (1, 1))
+        self.assertFalse([s for s in stats["signals"] if s["signal"] == "S6"], "agents assembled today are not idle")
+
+    def test_report_is_deterministic(self):
+        self.assertEqual(run("retro_stats.py", self.ws, "--until", "2026-11-24").returncode, 0)
+        first = (self.ws / "eb/retro/2026-11-24-stats.md").read_text(encoding="utf-8")
+        run("retro_stats.py", self.ws, "--until", "2026-11-24")
+        self.assertEqual((self.ws / "eb/retro/2026-11-24-stats.md").read_text(encoding="utf-8"), first)
+        self.assertNotIn("Сергей", first, "reasons are not copied into the statistics")
 
 
 class TestDecisionsExportOverview(unittest.TestCase):
@@ -285,6 +343,19 @@ class TestDecisionsExportOverview(unittest.TestCase):
     def test_decision_requires_substantive_for_edits(self):
         r = run("record_decision.py", self.ws, "--agent", "x", "--output", "o", "--decision", "EDITED", "--reason", "r", "--by", "b")
         self.assertEqual(r.returncode, 2)
+
+    def test_decision_without_reason_and_with_added_fact(self):
+        r = run("record_decision.py", self.ws, "--agent", "eb-employee-stories", "--output", "o", "--decision", "EDITED",
+                "--substantive", "yes", "--no-reason", "--by", "Контент-менеджер", "--check", "eb/work/quality-gate/x.md",
+                "--facts-added", "Учебный центр принимает всех")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        text = (self.ws / r.stdout.strip()).read_text(encoding="utf-8")
+        self.assertIn("(no reason given)", text)
+        self.assertIn("- Check: eb/work/quality-gate/x.md", text)
+        self.assertIn("## Facts added", text)
+        both = run("record_decision.py", self.ws, "--agent", "x", "--output", "o", "--decision", "REJECTED",
+                   "--reason", "r", "--no-reason", "--by", "b")
+        self.assertEqual(both.returncode, 2)
 
     def test_decision_record(self):
         r = run("record_decision.py", self.ws, "--agent", "eb-stories", "--output", "eb/work/stories/a.md",

@@ -63,6 +63,7 @@ Tell them the minimum: any three of these are enough to start; the interview fil
 - Brand core built → the `function-diagnosis` skill.
 - Diagnosis approved → show the readiness for Phase 2 from `eb/status.md` (`workspace.md` §6), then the `team-assembly` skill.
 - Team assembled → the team works through the commands in `CLAUDE.md` (`/eb-sync`, `/weekly`, pipeline commands, `/decide`).
+- Two weeks since the first trial run or the last retro → the `retro` skill.
 
 Update `eb/status.md` after steps 3 and 5.
 

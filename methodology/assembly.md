@@ -39,6 +39,7 @@ When the library has a reference agent for the process (`library/agents/<library
 | `outputs_to` | The same vocabulary |
 | `first_metric` | The metric the owner agreed to |
 | `wave` | `WAVE 1`, `WAVE 2` |
+| `revisions` | Optional: IDs of the approved retro proposals applied to this description (`retro.md` §7) |
 
 ### 2.2 Sections, in this order
 

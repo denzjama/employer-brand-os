@@ -141,6 +141,10 @@ def render_agent(a: dict, pipelines: list) -> str:
     if a["external_facing"] == "true":
         rules.append("- Your draft goes to the quality gate before the owner sees it. If it comes back blocked, fix only the listed issues and add nothing new.")
     body = "\n\n".join(f"## {s}\n\n{a['sections'][s]}" for s in SECTIONS if s in a["sections"])
+    if a["library_id"] == "quality-gate":
+        # The gate works by the system's method; the runtime copy carries it, so it holds without vendor/.
+        method = (PLUGIN_ROOT / "methodology" / "quality.md").read_text(encoding="utf-8")
+        body += "\n\n## The quality-gate method\n\n" + re.sub(r"^#", "##", method.split("\n", 1)[1].strip(), flags=re.M)
     return (
         "---\n"
         f"name: eb-{a['id']}\n"
@@ -218,18 +222,19 @@ You are the coordinator of this Employer Brand team: the main session in the sha
 - `/decide` — record an owner's decision
 - `/export-docx` — draft to Word for an owner without Claude
 - `/eb-sync` — update the shared workspace
+- `/{PLUGIN_NAME}:retro` — the retro every two weeks: statistics, signals, proposals; only approved proposals change agents
 {wait_block}
 ## Handoff
 
-Give each agent: pipeline and step, from → to, the task, what is done so far (paths), brand-core files and fact IDs to use, acceptance criteria, who gets the result. Expect back: result path, criteria met and not met, what it could not do.
+Each agent step of a pipeline is done by that agent (`eb-<id>`), never by you in its place, even when you could: the agent's run is logged and the retro learns from it. If an agent cannot be called, say so and stop the pipeline. Give each agent: pipeline and step, from → to, the task, what is done so far (paths), brand-core files and fact IDs to use, acceptance criteria, who gets the result. Expect back: result path, criteria met and not met, what it could not do.
 
 ## Quality-gate loop
 
-Every external draft goes to the quality gate first. On blocked: back to the agent with the issues only; it fixes those and adds nothing. At most three attempts; then the draft goes to the owner with the history, marked as not passed.
+Every external draft goes to the quality gate first. Give the gate the draft, the agent's roster id, the pipeline, the acceptance criteria, the attempt number and the source the draft was written from. The gate checks with the auditor method and saves each check in `eb/work/quality-gate/` with its header (agent, draft, attempt, verdict) and issue codes; the retro counts them. On blocked: back to the agent with the issues only; it fixes those and adds nothing. At most three attempts; then the draft goes to the owner with the history, marked as not passed.
 
 ## Decisions and runs
 
-- Every decision on an output is recorded with `/decide`: accepted, edited (substantive or not) or rejected, the reason in the owner's words, who decided, and the operator if an operator recorded it.
+- Every decision on an output is recorded with `/decide`: accepted, edited (substantive or not) or rejected, the reason in the owner's words (or that none was given), who decided, the operator if an operator recorded it, the gate check the owner saw, and any fact the owner added or corrected.
 - Agent runs are logged automatically in `eb/log/runs/`.
 
 ## Shared repository routine

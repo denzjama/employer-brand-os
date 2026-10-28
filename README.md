@@ -4,7 +4,7 @@
 
 Employer Brand OS is a Claude Code plugin. It diagnoses how your EB function works, decides with you where agents take the work, where they assist and where people stay in charge, and proposes an agent team with a human owner and a ritual for every agent. It is the next step after [Employer Brand Auditor](https://github.com/denzjama/employer-brand-auditor) and keeps its rule: **no evidence → no claim.**
 
-Status: **v0.2.2 — Phase 1 (diagnosis) and Phase 2 (team assembly).** The adaptation loop (retro) is designed in [`ARCHITECTURE.md`](ARCHITECTURE.md) and comes next.
+Status: **v0.3.0 — all four phases:** diagnosis, team assembly, work with a quality gate built on the auditor method, and the retro that adapts the team. Tested on a fictional employer; the first live retro comes with the first pilot iteration.
 
 ## Install
 
@@ -39,6 +39,11 @@ Open Claude Code in an empty folder for your workspace (not inside the plugin) a
 4. **Owners and operators.** An owner without Claude gets drafts as files or Word documents and decides; an operator runs the agent and records the decision.
 5. **Logs that feed the retro:** every agent run is logged automatically, every human decision with its reason.
 
+## What the work and the retro give you
+
+1. **A quality gate built on the Employer Brand Auditor method.** Every external draft is checked claim by claim against the confirmed facts, with their scope and period intact, quotes checked against the source, central claims tested for genericity and the auditor's red flags named. Each issue has a code, so the team sees where each agent stumbles.
+2. **A retro every two weeks.** The logs are counted, not estimated: runs, decisions, edits, rejections, facts owners added, gate verdicts and issue codes. The retro turns signals into at most seven proposals with their evidence. People decide; only approved proposals change an agent, the gate, a fact or an autonomy level. External agents never go above drafts.
+
 ## What it never does
 
 - Publish, post or reply on your behalf. People publish; agents prepare.
@@ -53,9 +58,9 @@ Open Claude Code in an empty folder for your workspace (not inside the plugin) a
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | Product design: phases, brand core, autonomy, roadmap |
 | [`methodology/`](methodology/) | Rules every skill and agent follows (model-independent) |
 | [`library/`](library/) | Catalogue of Employer Brand processes, reference agents for the most common ones, and typical pipelines |
-| [`skills/`](skills/) | Claude Code skills: `eb-setup`, `brand-core`, `function-diagnosis`, `team-assembly` |
+| [`skills/`](skills/) | Claude Code skills: `eb-setup`, `brand-core`, `function-diagnosis`, `team-assembly`, `retro` |
 | [`hooks/`](hooks/) | Write guard and run log for team workspaces |
-| [`demo/`](demo/README.md) | A fictional employer with full materials, 15 built-in traps, and snapshots of an end-to-end run |
+| [`demo/`](demo/README.md) | A fictional employer with full materials, 15 built-in traps, snapshots of an end-to-end run, and four weeks of team logs for the retro ([`demo/retro/`](demo/retro/README.md)) |
 | [`tests/`](tests/) · [`evals/`](evals/README.md) | Script tests (no model calls) and behavioural evals for `claude plugin eval` |
 | [`templates/`](templates/) | Overview page, team roster format, canonical agent sample, ritual commands |
 | [`scripts/`](scripts/) | Workspace setup, inventory, text extraction (docx, pptx, xlsx, html), overview builder, validator |

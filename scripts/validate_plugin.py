@@ -29,7 +29,8 @@ REQUIRED = [
     "templates/overview.html", "templates/overview.sample.json", "templates/team-roster.sample.json",
     "methodology/assembly.md", "methodology/coordination.md", "templates/agent.sample.md",
     "hooks/hooks.json", "scripts/render_team.py", "scripts/guard_write.py", "scripts/log_run.py",
-    "library/agents/README.md", "library/pipelines/README.md", "scripts/eb_hooks.py", "scripts/record_decision.py", "scripts/export_docx.py", "scripts/join_team.sh",
+    "library/agents/README.md", "library/pipelines/README.md", "methodology/quality.md", "methodology/retro.md",
+    "scripts/retro_stats.py", "skills/retro/SKILL.md", "demo/retro/README.md", "demo/retro/build_logs.py", "scripts/eb_hooks.py", "scripts/record_decision.py", "scripts/export_docx.py", "scripts/join_team.sh",
 ]
 REF_SECTIONS = [
     "Purpose", "Reads", "Produces", "Method", "Handoff", "Checks before handing over", "Never does",
@@ -221,6 +222,44 @@ def check_references() -> None:
             err(f"team-roster.sample.json: pipeline {pl.get('id')} has unknown library_id {lib}")
 
 
+def check_phase34() -> None:
+    import filecmp
+    import shutil
+    import subprocess
+    import tempfile
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import retro_stats
+    quality = (ROOT / "methodology/quality.md").read_text(encoding="utf-8")
+    terms = (ROOT / "methodology/terminology.md").read_text(encoding="utf-8")
+    in_quality = set(re.findall(r"\| `([A-Z][A-Z ]+[A-Z])` \| (?:yes|no)", quality))
+    in_quality |= set(re.findall(r"is issue `([A-Z]+)`", quality))
+    for code in sorted(retro_stats.CODES):
+        if code not in in_quality:
+            err(f"issue code {code} is counted by retro_stats.py but not defined in quality.md")
+        if f"`{code}`" not in terms:
+            err(f"issue code {code} is missing from terminology.md")
+    for code in sorted(in_quality - retro_stats.CODES):
+        err(f"issue code {code} in quality.md is not counted by retro_stats.py")
+    # The demo logs are rebuilt from build_logs.py; the committed overlay must match.
+    overlay = ROOT / "demo/retro/overlay"
+    if not overlay.is_dir():
+        err("demo/retro/overlay is missing: run demo/retro/build_logs.py")
+        return
+    with tempfile.TemporaryDirectory() as tmp:
+        copy = Path(tmp) / "retro"
+        shutil.copytree(ROOT / "demo/retro", copy, ignore=shutil.ignore_patterns("overlay", "__pycache__"))
+        subprocess.run([sys.executable, str(copy / "build_logs.py")], capture_output=True)
+        cmp = filecmp.dircmp(overlay, copy / "overlay")
+        def diff(c, prefix=""):
+            out = [prefix + n for n in c.left_only + c.right_only + c.diff_files]
+            for name, sub in c.subdirs.items():
+                out += diff(sub, prefix + name + "/")
+            return out
+        changed = diff(cmp)
+        if changed:
+            err(f"demo/retro/overlay is out of date with build_logs.py: {changed[:5]}")
+
+
 def check_text() -> None:
     for path in [*ROOT.glob("*.md"), *ROOT.glob("methodology/*.md"), *ROOT.glob("library/**/*.md"), *ROOT.glob("skills/*/SKILL.md")]:
         text = path.read_text(encoding="utf-8")
@@ -351,6 +390,7 @@ def main() -> int:
     check_skills()
     check_library()
     check_references()
+    check_phase34()
     check_text()
     if errors:
         print(f"FAILED: {len(errors)} problem(s)")

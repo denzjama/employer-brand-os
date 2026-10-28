@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0 — quality gate on the auditor method, and the retro (Phases 3–4)
+
+- `methodology/quality.md`: the quality gate checks a draft with the Employer Brand Auditor method: claim extraction, fact check with status, kind and anchors, links between facts, verbatim quotes, quarantine of unconfirmed facts, the genericity test on central claims, the auditor's red flags that apply to drafts (with their IDs), and a verdict. Every issue has a code; every check is saved with a fixed header (agent, draft, attempt, verdict) so it can be counted.
+- The quality-gate reference agent follows the method; `render_team.py` embeds the method in the generated quality-gate agent, so it holds without `vendor/`.
+- Decision records gain the gate check the owner saw, facts the owner added, and an explicit "no reason given" (`record_decision.py --check --facts-added --no-reason`; `/decide` asks for them).
+- `methodology/retro.md` and the `retro` skill (Phase 4): every two weeks the iteration is counted, signals S1–S10 found, at most seven proposals written with their evidence, decisions recorded, and only approved proposals applied. External-facing agents are never proposed above L1.
+- `scripts/retro_stats.py`: deterministic iteration statistics and countable signals from the logs and gate checks, including checks written before the fixed header.
+- `demo/retro/`: four weeks of fictional team logs with nine planted signals and traps (answer key R1–R9), built by `build_logs.py`.
+- Evals: `quality-gate-traps` (a story draft with eight planted problems against five confirmed facts) and `retro` (the answer key). Tests: retro statistics on the demo logs, decision records, the gate method in the runtime agent.
+- Validator: issue codes agree between `quality.md`, `terminology.md` and `retro_stats.py`; the demo logs match their builder.
+
 ## 0.2.2 — reference agents and pipeline library
 
 - `library/agents/`: ten reference agents for the most common processes (quality gate, employee stories, review monitoring, review responses, project briefs, channel adaptation, content plan, CHRO report, EVP guardian, adoption coach). Each gives the method step by step, the result template, acceptance criteria, checks, limits, the failures owners usually reject, and what to collect from the client. Assembly starts every canonical description from its reference, so agent quality no longer depends on how the model expands a short library entry.

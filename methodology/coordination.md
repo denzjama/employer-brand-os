@@ -22,7 +22,7 @@ The agent returns the same fields plus: the result path, which criteria are met,
 
 Every external-facing draft goes to the quality gate before its owner sees it.
 
-1. The gate returns `PASS`, `PASS WITH FIXES` or `BLOCKED` with the issues and the unmet criteria.
+1. The gate checks the draft with the method of `quality.md` and returns `PASS`, `PASS WITH FIXES` or `BLOCKED` with the issues, their codes and the unmet criteria. Every check is saved in its own file, so that the retro can count verdicts, attempts and issue codes per agent.
 2. On `BLOCKED`, the draft goes back to the agent with the issues only. The agent fixes those issues and adds nothing new.
 3. At most three attempts. After the third, the draft goes to the owner with the history of attempts, marked as not passed. Such cases are the retro's main material.
 4. On `PASS WITH FIXES`, the owner sees the draft with the suggested fixes; the agent does not apply them on its own.
@@ -39,9 +39,11 @@ Every human decision on an output is recorded in its own file, `eb/log/decisions
 | Decision | `ACCEPTED`, `EDITED`, `REJECTED` (`terminology.md` §7) |
 | Substantive | For `EDITED`: whether a fact, a conclusion or the structure changed (`autonomy.md` §3) |
 | Reason | In the decider's words |
+| Check | Path of the quality-gate check the owner saw, if the draft passed the gate |
+| Facts added | Facts the owner added or corrected while editing, in the owner's words; empty if none |
 | Decided by | The owner's role; "via operator <role>" when an operator recorded it |
 
-One file per decision, so that two people never edit the same file.
+One file per decision, so that two people never edit the same file. A rejection is recorded with its reason like any other decision; a rejection without a reason is a question for the retro, not a reason to skip the record.
 
 ## 4. Run records
 

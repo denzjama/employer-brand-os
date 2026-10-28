@@ -36,7 +36,7 @@ And these sections, in this order:
 ## Not in the library
 
 - **Job ads.** Generation is already automated in HCM systems and job boards. A client who still writes ads by hand gets a custom process.
-- **System agents.** The coordinator, the architect and the retro agent are part of the system, not processes of the function. Their roles are described in `ARCHITECTURE.md` §2; each gets its methodology file when its phase is built.
+- **System agents.** The coordinator, the architect and the retro are part of the system, not processes of the function. Their methodology is in `methodology/assembly.md`, `methodology/coordination.md` and `methodology/retro.md`.
 
 ## Custom processes
 

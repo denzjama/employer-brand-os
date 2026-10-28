@@ -11,10 +11,11 @@ Every decision on an agent output is recorded, because the retro learns from the
 2. Ask only what is missing:
    - the decision: accepted, accepted with edits, or rejected;
    - for edits: did a fact, a conclusion or the structure change (substantive), or only wording;
-   - the reason, in the owner's own words; never invent or shorten it into something else;
+   - the reason, in the owner's own words; never invent or shorten it into something else. If the owner gives none, record that with `--no-reason` instead of making one up;
+   - for edits: did the owner add or correct a fact; if so, which, in the owner's words (the retro proposes it for the brand core);
    - who decided: the owner's role; if you are recording for an owner without access, also the operator's role.
 3. Run:
-   `python3 {{scripts}}/record_decision.py . --agent <roster id, the folder name under eb/work/> --output <path> --decision ACCEPTED|EDITED|REJECTED [--substantive yes|no] --reason "<reason>" --by "<owner role>" [--operator "<operator role>"]`
+   `python3 {{scripts}}/record_decision.py . --agent <roster id, the folder name under eb/work/> --output <path> --decision ACCEPTED|EDITED|REJECTED [--substantive yes|no] (--reason "<reason>" | --no-reason) --by "<owner role>" [--operator "<operator role>"] [--check <path of the quality-gate check>] [--facts-added "<facts>"]`
 4. If the decision is accepted or edited and the output will leave the team, show once more the list of numbers in it with their status and kind (`coordination` rules in `CLAUDE.md`). The owner publishes or sends it; you never do.
 5. Share the change (step 3 of the repository routine in `CLAUDE.md`).
 

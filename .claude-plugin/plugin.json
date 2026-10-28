@@ -1,6 +1,6 @@
 {
   "name": "employer-brand-os",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "A multi-agent operating system for an Employer Brand function: diagnoses the function, assembles a team of process agents with human owners and rituals, and adapts it over time.",
   "author": {
     "name": "Denis Zamaletdinov"
