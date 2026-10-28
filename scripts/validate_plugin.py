@@ -20,7 +20,7 @@ SECTIONS = [
     "Human checkpoint", "Suggested ritual", "Metrics", "Risks and limits",
 ]
 REQUIRED = [
-    "ARCHITECTURE.md", "README.md", "LICENSE",
+    "ARCHITECTURE.md", "README.md", "LICENSE", "AGENTS.md", "SECURITY.md",
     ".claude-plugin/plugin.json", ".claude-plugin/marketplace.json",
     "methodology/principles.md", "methodology/terminology.md", "methodology/workspace.md",
     "methodology/brand-core.md", "methodology/diagnosis.md", "methodology/autonomy.md",

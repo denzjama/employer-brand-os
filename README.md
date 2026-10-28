@@ -67,6 +67,8 @@ For the EB lead, in Russian: [руководство для руководите
 | [`demo/`](demo/README.md) | A fictional employer with full materials, 15 built-in traps, snapshots of an end-to-end run, and four weeks of team logs for the retro ([`demo/retro/`](demo/retro/README.md)) |
 | [`tests/`](tests/) · [`evals/`](evals/README.md) | Script tests (no model calls) and behavioural evals for `claude plugin eval` |
 | [`docs/`](docs/) | Guides for the EB lead and for the client's information security, in Russian |
+| [`AGENTS.md`](AGENTS.md) | Rules for AI coding agents that change this repository |
+| [`SECURITY.md`](SECURITY.md) | How to report a vulnerability |
 | [`templates/`](templates/) | Overview page, team roster format, canonical agent sample, ritual commands |
 | [`scripts/`](scripts/) | Workspace setup, inventory, text extraction (docx, pptx, xlsx, html), overview builder, validator |
 
