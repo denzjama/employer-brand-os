@@ -30,7 +30,7 @@ REQUIRED = [
     "methodology/assembly.md", "methodology/coordination.md", "templates/agent.sample.md",
     "hooks/hooks.json", "scripts/render_team.py", "scripts/guard_write.py", "scripts/log_run.py",
     "library/agents/README.md", "library/pipelines/README.md", "methodology/quality.md", "methodology/retro.md",
-    "scripts/retro_stats.py", "skills/retro/SKILL.md", "demo/retro/README.md", "demo/retro/build_logs.py", "scripts/eb_hooks.py", "scripts/record_decision.py", "scripts/export_docx.py", "scripts/join_team.sh",
+    "scripts/retro_stats.py", "skills/retro/SKILL.md", "docs/guide-ru.md", "docs/security-ru.md", "demo/retro/README.md", "demo/retro/build_logs.py", "scripts/eb_hooks.py", "scripts/record_decision.py", "scripts/export_docx.py", "scripts/join_team.sh",
 ]
 REF_SECTIONS = [
     "Purpose", "Reads", "Produces", "Method", "Handoff", "Checks before handing over", "Never does",
@@ -260,6 +260,25 @@ def check_phase34() -> None:
             err(f"demo/retro/overlay is out of date with build_logs.py: {changed[:5]}")
 
 
+def check_publishable() -> None:
+    """Nothing machine- or client-specific may be published with the plugin."""
+    import subprocess
+    files = subprocess.run(["git", "ls-files"], capture_output=True, text=True, cwd=ROOT).stdout.split()
+    if not files:
+        return
+    if any(f.startswith("eb/") for f in files):
+        err("a client workspace (eb/) is tracked at the repository root")
+    home = re.compile(r"(/Users/|/home/|C:\\Users\\|/private/var/|/private/tmp/)[A-Za-z0-9._-]+")
+    for rel in files:
+        path = ROOT / rel
+        if path.suffix.lower() not in {".md", ".py", ".json", ".sh", ".yaml", ".html", ".txt", ".csv"} or not path.is_file():
+            continue
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        m = home.search(text)
+        if m:
+            err(f"{rel}: machine-specific path {m.group(0)}")
+
+
 def check_text() -> None:
     for path in [*ROOT.glob("*.md"), *ROOT.glob("methodology/*.md"), *ROOT.glob("library/**/*.md"), *ROOT.glob("skills/*/SKILL.md")]:
         text = path.read_text(encoding="utf-8")
@@ -391,6 +410,7 @@ def main() -> int:
     check_library()
     check_references()
     check_phase34()
+    check_publishable()
     check_text()
     if errors:
         print(f"FAILED: {len(errors)} problem(s)")

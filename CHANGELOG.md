@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.1 — packaging for the first clients
+
+- `docs/guide-ru.md`: a guide for the EB lead without a technical background: what the system does, what is needed, installation, the four phases, the rules that cannot be switched off, what to do when something goes wrong.
+- `docs/security-ru.md`: a brief for the client's information security: data flows, what stays on the machine, built-in limits and how each is enforced, version control of the vendored plugin, steps before a pilot.
+- README: requirements and links to both guides.
+- Validator: no client workspace and no machine-specific paths in the published files.
+- Checked before publishing: no pilot data or machine paths in any commit; installation from a fresh clone; the first run in an empty folder gives the data notice and creates nothing before consent.
+
 ## 0.3.0 — quality gate on the auditor method, and the retro (Phases 3–4)
 
 - `methodology/quality.md`: the quality gate checks a draft with the Employer Brand Auditor method: claim extraction, fact check with status, kind and anchors, links between facts, verbatim quotes, quarantine of unconfirmed facts, the genericity test on central claims, the auditor's red flags that apply to drafts (with their IDs), and a verdict. Every issue has a code; every check is saved with a fixed header (agent, draft, attempt, verdict) so it can be counted.

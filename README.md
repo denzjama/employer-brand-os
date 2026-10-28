@@ -4,7 +4,7 @@
 
 Employer Brand OS is a Claude Code plugin. It diagnoses how your EB function works, decides with you where agents take the work, where they assist and where people stay in charge, and proposes an agent team with a human owner and a ritual for every agent. It is the next step after [Employer Brand Auditor](https://github.com/denzjama/employer-brand-auditor) and keeps its rule: **no evidence → no claim.**
 
-Status: **v0.3.0 — all four phases:** diagnosis, team assembly, work with a quality gate built on the auditor method, and the retro that adapts the team. Tested on a fictional employer; the first live retro comes with the first pilot iteration.
+Status: **v0.3.1 — all four phases:** diagnosis, team assembly, work with a quality gate built on the auditor method, and the retro that adapts the team. Tested on a fictional employer; the first live retro comes with the first pilot iteration.
 
 ## Install
 
@@ -16,11 +16,15 @@ claude plugin marketplace add denzjama/employer-brand-os
 claude plugin install employer-brand-os@employer-brand-os
 ```
 
+Requirements: a Claude subscription (Pro, Max, Team or Enterprise) or API access, Claude Code, Python 3.9+, and git for the shared team workspace. macOS and Linux; on Windows use WSL or Git Bash.
+
 Open Claude Code in an empty folder for your workspace (not inside the plugin) and write:
 
 ```text
 Подключи Employer Brand OS
 ```
+
+For the EB lead, in Russian: [руководство для руководителя HR-бренда](docs/guide-ru.md). For the client's information security team: [справка для ИБ](docs/security-ru.md) — what data goes where, what stays on the machine, and the built-in limits.
 
 ## What Phase 1 gives you
 
@@ -62,6 +66,7 @@ Open Claude Code in an empty folder for your workspace (not inside the plugin) a
 | [`hooks/`](hooks/) | Write guard and run log for team workspaces |
 | [`demo/`](demo/README.md) | A fictional employer with full materials, 15 built-in traps, snapshots of an end-to-end run, and four weeks of team logs for the retro ([`demo/retro/`](demo/retro/README.md)) |
 | [`tests/`](tests/) · [`evals/`](evals/README.md) | Script tests (no model calls) and behavioural evals for `claude plugin eval` |
+| [`docs/`](docs/) | Guides for the EB lead and for the client's information security, in Russian |
 | [`templates/`](templates/) | Overview page, team roster format, canonical agent sample, ritual commands |
 | [`scripts/`](scripts/) | Workspace setup, inventory, text extraction (docx, pptx, xlsx, html), overview builder, validator |
 
