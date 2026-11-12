@@ -4,7 +4,7 @@
 
 Employer Brand OS is a Claude Code plugin. It diagnoses how your EB function works, decides with you where agents take the work, where they assist and where people stay in charge, and proposes an agent team with a human owner and a ritual for every agent. It is the next step after [Employer Brand Auditor](https://github.com/denzjama/employer-brand-auditor) and keeps its rule: **no evidence → no claim.**
 
-Status: **v0.3.1 — all four phases:** diagnosis, team assembly, work with a quality gate built on the auditor method, and the retro that adapts the team. Tested on a fictional employer; the first live retro comes with the first pilot iteration.
+Status: **v0.4.0 — all four phases:** diagnosis, team assembly, work with a quality gate built on the auditor method, and the retro that adapts the team. Tested on a fictional employer; the first live retro comes with the first pilot iteration.
 
 ## Install
 
@@ -42,6 +42,7 @@ For the EB lead, in Russian: [руководство для руководите
 3. **A coordinator** (`CLAUDE.md`) and **commands**: one per pipeline, plus `/weekly`, `/core-review`, `/decide`, `/export-docx`, `/eb-sync`.
 4. **Owners and operators.** An owner without Claude gets drafts as files or Word documents and decides; an operator runs the agent and records the decision.
 5. **Logs that feed the retro:** every agent run is logged automatically, every human decision with its reason.
+6. **A team map** (`eb/team/team-map.html`): the whole team on one page, with where people decide and what stops a pipeline, and the status for the day: what waits for you, counted from the logs. It is rebuilt at assembly and at every `/weekly`.
 
 ## What the work and the retro give you
 

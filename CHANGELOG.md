@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0 — the team map
+
+- `scripts/build_team_map.py` and `templates/team-map.html`: one page for an assembled team (`eb/team/team-map.html`). The materials, the rules, the brand core with fact counts by status, the log, the coordinator, the agents grouped by the domain of their library process with owner, operator, ritual, autonomy level and whether the output is external, agents of later waves as waiting, the pipelines as paths through agents, the quality gate and people, where people decide and what stops a pipeline. Beside the map, the status for a date: counts for the last two weeks, what waits for a person (drafts without a decision, the retro signals in plain words, facts to confirm), the day's runs and decisions.
+- The page shows counts and names of agents and roles only. It never quotes decision reasons, materials or facts, because they may carry personal data or hidden instructions; the published-by-agents count is always zero and is shown to make the rule visible.
+- `methodology/assembly.md` §10a describes the map. The `team-assembly` skill builds it at the end of assembly; the `/weekly` ritual rebuilds it before the meeting.
+- Tests: the map on the demo team and its four weeks of logs (counts, waiting items, no text from decisions, deterministic for a date, hostile names escaped). Validator: the Russian and English labels match, every library domain has a group.
+
 ## 0.3.1 — packaging for the first clients
 
 - `docs/guide-ru.md`: a guide for the EB lead without a technical background: what the system does, what is needed, installation, the four phases, the rules that cannot be switched off, what to do when something goes wrong.

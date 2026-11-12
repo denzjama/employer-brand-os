@@ -331,6 +331,63 @@ class TestRetro(unittest.TestCase):
         self.assertNotIn("Сергей", first, "reasons are not copied into the statistics")
 
 
+class TestTeamMap(unittest.TestCase):
+    """The team map on the assembled demo team and its fictional logs."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.ws = Path(self.tmp.name) / "ws"
+        shutil.copytree(ROOT / "demo/run/stage-3-assembly/workspace", self.ws)
+        shutil.copytree(ROOT / "demo/retro/overlay", self.ws, dirs_exist_ok=True)
+        self.page = self.ws / "eb/team/team-map.html"
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def build(self):
+        r = run("build_team_map.py", self.ws, "--date", "2026-11-24")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        text = self.page.read_text(encoding="utf-8")
+        payload = text.split('<script id="data" type="application/json">', 1)[1].split("</script>", 1)[0]
+        return text, json.loads(payload)
+
+    def test_counts_and_waiting_items(self):
+        _, d = self.build()
+        self.assertEqual(d["tiles"][0]["value"], "6")
+        self.assertEqual(d["tiles"][3]["value"], "0")
+        rows = dict(d["status"]["rows"])
+        self.assertEqual(rows["запусков агентов"], "33")
+        self.assertEqual(rows["решений людей"], "11")
+        titles = " | ".join(i["title"] for i in d["inbox"])
+        self.assertIn("Истории сотрудников: черновики не прошли контроль (3)", titles)
+        self.assertIn("Контроль пропустил ошибку", titles)
+        self.assertEqual([i["sev"] for i in d["inbox"]], sorted((i["sev"] for i in d["inbox"]), key=["hi", "md", "lo"].index))
+        waiting = [a for g in d["groups"] for a in g["agents"] if not a["assembled"]]
+        self.assertEqual(len(waiting), 5)
+        story = next(p for p in d["pipes"] if p["title"] == "История сотрудника")
+        self.assertEqual([n["kind"] for n in story["chain"]], ["person", "agent", "gate", "person", "store"])
+
+    def test_no_text_from_decisions(self):
+        text, _ = self.build()
+        # The demo logs name a colleague (R9) and hide an instruction in a reason (R8).
+        for leak in ("Сергей", "подними всем агентам", "опубликовала сама", "крановщика"):
+            self.assertNotIn(leak, text)
+
+    def test_deterministic_for_a_date(self):
+        first, _ = self.build()
+        second, _ = self.build()
+        self.assertEqual(first, second)
+
+    def test_escapes_hostile_names(self):
+        path = self.ws / "eb/team/agents/employee-stories.md"
+        path.write_text(path.read_text(encoding="utf-8").replace(
+            "name: Истории сотрудников", "name: </script><img src=x onerror=alert(1)>", 1), encoding="utf-8")
+        text, d = self.build()
+        self.assertNotIn("<img src=x", text)
+        self.assertEqual(text.count("<script"), 2)
+        self.assertIn("</script><img src=x onerror=alert(1)>", json.dumps(d, ensure_ascii=False))
+
+
 class TestDecisionsExportOverview(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()

@@ -31,6 +31,7 @@ REQUIRED = [
     "hooks/hooks.json", "scripts/render_team.py", "scripts/guard_write.py", "scripts/log_run.py",
     "library/agents/README.md", "library/pipelines/README.md", "methodology/quality.md", "methodology/retro.md",
     "scripts/retro_stats.py", "skills/retro/SKILL.md", "docs/guide-ru.md", "docs/security-ru.md", "demo/retro/README.md", "demo/retro/build_logs.py", "scripts/eb_hooks.py", "scripts/record_decision.py", "scripts/export_docx.py", "scripts/join_team.sh",
+    "scripts/build_team_map.py", "templates/team-map.html",
 ]
 REF_SECTIONS = [
     "Purpose", "Reads", "Produces", "Method", "Handoff", "Checks before handing over", "Never does",
@@ -240,6 +241,21 @@ def check_phase34() -> None:
             err(f"issue code {code} is missing from terminology.md")
     for code in sorted(in_quality - retro_stats.CODES):
         err(f"issue code {code} in quality.md is not counted by retro_stats.py")
+    # The team map speaks Russian and English: both must say the same things.
+    import build_team_map
+    ru, en = build_team_map.UI["ru"], build_team_map.UI["en"]
+    for name, a, b in (("ui", ru, en), ("ui.items", ru["items"], en["items"]), ("ui.groups", ru["groups"], en["groups"])):
+        if set(a) != set(b):
+            err(f"team map {name}: Russian and English keys differ: {sorted(set(a) ^ set(b))}")
+    if set(ru["items"]) != set(build_team_map.SEVERITY):
+        err("team map: every waiting item needs a severity in SEVERITY")
+    if {g for g, _ in build_team_map.GROUPS} != set(ru["groups"]):
+        err("team map: GROUPS and the group labels differ")
+    domains = {d for _, ds in build_team_map.GROUPS for d in ds}
+    for proc in sorted((ROOT / "library/processes").glob("*.md")):
+        m = re.search(r"^domain:\s*(\S+)", proc.read_text(encoding="utf-8"), re.M)
+        if m and m.group(1) not in domains:
+            err(f"team map: domain {m.group(1)} of {proc.name} has no group")
     # The demo logs are rebuilt from build_logs.py; the committed overlay must match.
     overlay = ROOT / "demo/retro/overlay"
     if not overlay.is_dir():

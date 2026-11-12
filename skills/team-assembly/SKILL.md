@@ -61,7 +61,9 @@ For each generated pipeline, with its owner, run it once on the real input chose
 ### Step 7 — Onboarding
 Hand the adoption coach agent the onboarding task (`assembly.md` §8). It returns one page per owner and per operator; write them to `eb/team/onboarding/<role>.md`. Each page: your agents, your rituals, how to join (clone, `sh join_team.sh`), how to start a pipeline, how to record a decision, what the agent never does, topics without confirmed facts, who to ask.
 
-### Step 8 — Status
+### Step 8 — Team map and status
+Run `python3 <plugin>/scripts/build_team_map.py .`. It writes `eb/team/team-map.html` (`assembly.md` §10a): the team on one page and what waits for a person today. Give the user the path and say in one line what the page shows.
+
 Update `eb/status.md`: Phase 2 complete, agents assembled and waiting with reasons, the date of the first retro (two weeks after the first trial). Share the change if the repository is set up.
 
 ## Later waves and changes
